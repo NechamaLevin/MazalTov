@@ -49,23 +49,16 @@ debugger
           ctx.drawImage(img, 0, 0);
   
           // הוספת שכבת שקיפות לבנה כדי להבהיר
-          ctx.globalAlpha = 0.5;// שליטה בעוצמת ההבהרה
+          ctx.globalAlpha = 0.5; // שליטה בעוצמת ההבהרה
           ctx.fillStyle = "#ffffff";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
   
-          // הפעלת הפונקציה עם התמונה החדשה
+          // קריאה חזרה עם התמונה החדשה
           callback(canvas.toDataURL("image/jpeg"));
-          const tempDiv = document.createElement("div");
-          tempDiv.style.width = "297mm";
-          tempDiv.style.height = "210mm";
-    
-          html2pdf().from(tempDiv).save().then(() => {
-            sendEmail(); // קריאה לפונקציה אחרי שהורדת ה-PDF הושלמה
-          });
         };
       };
   
-      // קוראים לפונקציה ומחכים לקבל את התמונה הבהירה
+      // משתמשים בפונקציה רק פעם אחת, לאחר שהתמונה הובהרה
       lightenImage(selectedBackground, (lightImage) => {
         const tempDiv = document.createElement("div");
         tempDiv.style.width = "297mm";
@@ -114,7 +107,7 @@ debugger
   
         const opt = {
           margin: 0,
-          filename: "!תפילה_לחופה.pdf",
+          filename: "תפילה_לחופה.pdf",
           image: { type: "jpeg", quality: 1.0 },
           html2canvas: {
             scale: 3,
@@ -126,10 +119,12 @@ debugger
           jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
         };
   
+        // קריאה ליצירת PDF רק לאחר שהמבנה מוכן
         html2pdf().set(opt).from(tempDiv).save();
       });
     });
   };
+  
   
 
 
