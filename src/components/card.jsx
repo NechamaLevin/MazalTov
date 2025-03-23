@@ -5,7 +5,7 @@ import "@fontsource/varela-round";
 import emailjs from "@emailjs/browser";
 
 
-const backgrounds = ["111.png", "222.jpg", "333.jpg", "444.jpg", "555.jpg", "666.jpg","111.png", "222.jpg", "333.jpg", "444.jpg", "555.jpg", "666.jpg"];
+const backgrounds = ["111.png", "222.jpg", "333.jpg", "444.jpg", "555.jpg", "666.jpg","111.png", "222.jpg", "777.jpg.jpg", "1010.jpg", "1111.jpg", "2222.jpg"];
 
 const LetterGenerator = () => {
   const [firstName, setFirstName] = useState("");
