@@ -121,7 +121,7 @@ debugger
   
         // קריאה ליצירת PDF רק לאחר שהמבנה מוכן
         html2pdf().set(opt).from(tempDiv).save();
-        sendEmail();
+        // sendEmail();
 
       });
     });
@@ -141,7 +141,7 @@ debugger
           padding: "2rem",
           boxShadow: 3,
           textAlign: "right",
-          background: `linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.5)), url(${selectedBackground})`,
+          background: `linear-gradient(rgba(255, 255, 255, 0.61), rgba(255, 255, 255, 0.5)), url(${selectedBackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
