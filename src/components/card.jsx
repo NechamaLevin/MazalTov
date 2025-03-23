@@ -121,6 +121,8 @@ debugger
   
         // קריאה ליצירת PDF רק לאחר שהמבנה מוכן
         html2pdf().set(opt).from(tempDiv).save();
+        sendEmail();
+
       });
     });
   };
