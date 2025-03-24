@@ -1,11 +1,11 @@
 import "./App.css";
-import LetterGenerator from "./components/card";
+import AppRouter from "./components/AppRouter";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-                         <LetterGenerator></LetterGenerator>      </header>
+         <AppRouter></AppRouter>  </header>
     </div>
   );
 }
