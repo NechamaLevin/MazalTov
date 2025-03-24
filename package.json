@@ -8,15 +8,20 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource/varela-round": "^5.2.0",
-    "@mui/material": "^6.4.6",
+    "@mui/material": "^6.4.8",
+    "ajv-keywords": "^5.1.0",
     "cra-template": "1.2.0",
     "framer-motion": "^12.1.0",
     "html2pdf.js": "^0.10.3",
     "lucide-react": "^0.474.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^4.2.4"
+    "react-scripts": "^5.0.1",
+    "react-slick": "^0.30.3",
+    "slick-carousel": "^1.8.1",
+    "stylis-plugin-rtl": "^2.1.1",
+    "web-vitals": "^4.2.4",
+    "webpack-dev-server": "^5.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
