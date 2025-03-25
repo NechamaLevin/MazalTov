@@ -131,7 +131,7 @@ debugger
 
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "row-reverse", gap: 5, p: 3, justifyContent: "center", flexWrap: "wrap",padding:"30" }}>
+    <Box sx={{ display: "flex", flexDirection: "row-reverse", gap: 5, p: 3, justifyContent: "center", flexWrap: "wrap",padding:"30" ,overflow: "auto",}}>
       {/* כרטיס התפילה */}
       <Card
         ref={letterRef}
