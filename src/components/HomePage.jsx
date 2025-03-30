@@ -14,7 +14,7 @@ function HomePage() {
         alignItems: "center",
         width: "100vw",
         height: "100vh",
-        backgroundColor: "black",
+        backgroundColor:"rgba(0, 41, 97, 0.78)",
         backgroundPosition: "center",
         textAlign: "center",
         position: "relative",
@@ -23,9 +23,9 @@ function HomePage() {
       {/* כותרת עם אנימציה של ציפה מלמעלה */}
       <motion.h1
         style={{
-          color: "gold",
+          color: "white",
           fontSize: "3rem",
-          textShadow: "0 0 15px gold",
+          textShadow: "0 0 15px black",
           marginBottom: "30px",
         }}
         initial={{ opacity: 0, y: -50 }}
