@@ -1,6 +1,5 @@
 import "./App.css";
 import AppRouter from "./components/AppRouter";
-import TextEditorToolbar from "./components/textEditor";
 
 function App() {
   return (
