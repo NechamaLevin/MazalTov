@@ -5,7 +5,7 @@ import html2pdf from "html2pdf.js";
 import TextEditorToolbar from './textEditor.jsx'
 import { Download, KeyboardArrowDown } from "@mui/icons-material";
 
-const backgrounds = ["333.jpg", "444.jpg", "555.jpg", "666.jpg", "111.png", "222.jpg", "777.jpg.jpg"];
+const backgrounds = ["333.jpg", "444.jpg", "555.jpg", "666.jpg", "111.png", "222.jpg", "777.jpg.jpg","4444.jpg","5555.jpg","6666.jpg","7777.jpg","3333.jpg"];
 
 const LetterGenerator = () => {
   const [textStyle, setTextStyle] = useState({ 
