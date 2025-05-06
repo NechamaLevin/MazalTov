@@ -1,41 +1,52 @@
+
 import React, { useState, useRef } from "react";
-import TextEditorToolbar from './textEditor.jsx'
-import { Button, Card, CardContent, TextField, Box,Typography } from "@mui/material";
+import { Button, Card, CardContent, TextField, Box, Typography } from "@mui/material";
 import html2pdf from "html2pdf.js";
-
-
-import emailjs from "@emailjs/browser";
-
+import TextEditorToolbar from './textEditor.jsx'
+import { Download, KeyboardArrowDown } from "@mui/icons-material";
 
 const backgrounds = ["333.jpg", "444.jpg", "555.jpg", "666.jpg", "111.png", "222.jpg", "777.jpg.jpg"];
 
 const LetterGenerator = () => {
-  const [textStyle, setTextStyle] = useState({ textAlign: "right", color: "#000000" ,  fontFamily: "Rubik", // ערך ברירת מחדל
+  const [textStyle, setTextStyle] = useState({ 
+    textAlign: "right", 
+    color: "#000000",
+    fontFamily: "Rubik"
   });
+  
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [selectedBackground, setSelectedBackground] = useState("666.jpg");
-
+  
   const letterRef = useRef(null);
-  const sendEmail = () => {
-    debugger
-    const serviceID = "service_6sxz41s"; // הכניסי את ה-Service ID שלך
-    const templateID = "template_d016ffd"; // הכניסי את ה-Template ID שלך
-    const publicKey = "x7XK3cgIP_oFW03i4"; // הכניסי את ה-Public Key שלך
 
-    const templateParams = {
-      firstName: firstName,
-      lastName: lastName,
+  const [currentBackgroundPage, setCurrentBackgroundPage] = useState(0);
+  const backgroundsPerPage = 6;
+
+  const displayedBackgrounds = backgrounds.slice(
+    currentBackgroundPage * backgroundsPerPage,
+    (currentBackgroundPage + 1) * backgroundsPerPage
+  );
+
+  const totalPages = Math.ceil(backgrounds.length / backgroundsPerPage);
+
+  const [isPulsing, setIsPulsing] = useState(false);
+
+  React.useEffect(() => {
+    setIsPulsing(true);
+    const timer = setTimeout(() => setIsPulsing(false), 2000);
+    
+    const interval = setInterval(() => {
+      setIsPulsing(true);
+      setTimeout(() => setIsPulsing(false), 2000);
+    }, 10000);
+    
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
     };
+  }, []);
 
-    emailjs.send(serviceID, templateID, templateParams, publicKey)
-      .then((response) => {
-        console.log("SUCCESS!", response.status, response.text);
-      })
-      .catch((error) => {
-        console.error("FAILED...", error);
-      });
-  };
   const handleDownloadPDF = () => {
     document.fonts.ready.then(() => {
       if (!letterRef.current) return;
@@ -126,216 +137,325 @@ const LetterGenerator = () => {
 
         // קריאה ליצירת PDF רק לאחר שהמבנה מוכן
         html2pdf().set(opt).from(tempDiv).save();
-        sendEmail();
-
       });
     });
   };
 
-
-
-
   return (
     <Box
-    sx={{
-      bgcolor:"rgba(0, 41, 97, 0.78)",
-      display: "flex",
-      flexDirection: "column", // שינוי למבנה עמודות כדי שהכותרת תהיה מעל הכל
-      alignItems: "center",
-      gap: "20px",
-      p: 3,
-      height: "100vh",
-      overflow: "auto",
-    }}
-  >
-    {/* כותרת */}
-    <Typography variant="h4" sx={{  borderBottom: "2px solid #ccc", pb: 1,color: "white", mb: 2, textAlign: "center" }}>
-תפילה לחופה    </Typography>
-    <Box
       sx={{
-        bgcolor:"rgba(0, 41, 97, 0.78)",
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gridTemplateRows: "1fr 1fr 1fr",
+        bgcolor: "rgba(0, 41, 97, 0.78)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
         gap: "20px",
         p: 3,
-        height: "100vh",
-        direction: "rtl", // כיוון מימין לשמאל
-      overflow: "auto",
-      
+        minHeight: "100vh",
+        overflow: "auto",
+        position: "relative"
       }}
     >
+      <Box sx={{
+        position: "fixed",
+        bottom: "20px",
+        left: "5%",
+        transform: "translateX(-50%)",
+        animation: "bounce 2s infinite",
+        color: "white",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        zIndex: 10,
+        "@keyframes bounce": {
+          "0%, 20%, 50%, 80%, 100%": {
+            transform: "translateY(0) translateX(-50%)"
+          },
+          "40%": {
+            transform: "translateY(-20px) translateX(-50%)"
+          },
+          "60%": {
+            transform: "translateY(-10px) translateX(-50%)"
+          }
+        }
+      }}>
+        <Typography variant="body2" sx={{ mb: 1 }}>גלול למטה להמשך</Typography>
+        <KeyboardArrowDown />
+      </Box>
+
+      <Typography variant="h4" sx={{ borderBottom: "2px solid #ccc", pb: 1, color: "white", mb: 2, textAlign: "center" }}>
+        תפילה לחופה
+      </Typography>
+      
       <Box
-  sx={{
-    gridRow: "1 / 4", // משתרע על כל הגריד אנכית
-    gridColumn: "1 / 2", // ממוקם בין שתי העמודות
-    borderRight: "3px solid white", // קו מפריד לבן
-    height: "100%", // גובה מלא של הגריד
-    alignSelf: "stretch", // מאפשר לקו להימתח
-  }}
-/>                 
-      {/* כרטיס התפילה */}
-      <Card
-        ref={letterRef}
         sx={{
-          gridRow: "1 / 3", // תופסת שני שורות (מההתחלה עד לפני הרקעים)
-          gridColumn: "1/ 2", // בעמודה הראשונה (ימין)
-          width: "7.4cm",
-          height: "21cm", // גובה מלא
-          padding: "2rem",
-          boxShadow: 3,
-          textAlign: "right",
-          background: `linear-gradient(rgba(255, 255, 255, 0.61), rgba(255, 255, 255, 0.5)), url(${selectedBackground})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          position: "relative",
-          color: "black",
-          alignSelf: "center", // ממרכז את הכרטיס אנכית בתוך הגריד
-          justifySelf: "center", // ממרכז את הכרטיס אופקית בתוך הגרי
-          
+          display: "flex",
+          flexDirection: {xs: "column", md: "row"},
+          gap: "20px",
+          width: "100%",
+          maxWidth: "1200px",
+          height: "auto",
+          direction: "rtl",
+          overflow: "auto",
         }}
       >
-
-        <CardContent>
-          <p
-            style={
-              {
-                ...textStyle, // הוספת כל העיצובים שנבחרו
-
+        <Card
+          ref={letterRef}
+          sx={{
+            width: {xs: "100%", md: "7.4cm"},
+            height: {xs: "auto", md: "21cm"},
+            padding: "2rem",
+            boxShadow: 3,
+            textAlign: "right",
+            background: `linear-gradient(rgba(255, 255, 255, 0.61), rgba(255, 255, 255, 0.5)), url(${selectedBackground})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            position: "relative",
+            color: "black",
+            alignSelf: "flex-start"
+          }}
+        >
+          <CardContent>
+            <div
+              style={{
+                textAlign: "center",
+                marginBottom: "2rem",
+                fontFamily: "David Libre",
+                fontSize: "24px",
+                color: "#2c3e50",
+                textShadow: "2px 2px 4px rgba(0,0,0,0.1)",
+                padding: "10px",
+                borderBottom: "2px solid rgb(2, 2, 2)",
+                borderTop: "2px solid rgb(0, 0, 0)",
+                background: "rgba(255,255,255,0.7)",
+                borderRadius: "8px"
+              }}
+            >
+              תפילה לחופה
+            </div>
+            <p
+              style={{
+                ...textStyle,
                 fontSize: "16px",
                 lineHeight: "1.20",
                 letterSpacing: "0.9",
-
               }}
-          ><br></br><br></br><u>תפילה לחופה</u><br></br><br></br>
-            רבונו של עולם בשעה בה עומדים <br />
-            <b> החתן {firstName}</b>, <br />
-            <b> והכלה {lastName}</b> <br />
-            תחת החופה לבנות בית נאמן בישראל, אנא ברחמיך הרבים זכם להקים בית כשר ונאמן
-            ויהיה ביתם בנין עדי עד על אדני התורה והיראה, ותשרה שכינתך בביתם מתוך אהבה
-            ואחוה, הבנה שלום ורעות. תן להם חיים ארוכים וטובים של שמחה אמיתית ופנימית
-            מתוך יישוב הדעת ושלווה ובריאות איתנה, ברכם בכל מיני ברכה ותשפיע עליהם משפע
-            אוצרך הטוב, והצליחם ברוחניות ובגשמיות בכל מיני דמיטב, פרנסה בכבוד וברווח,
-            ותזכם במקום יישוב נח ומוצלח, לקיים כל דברי תורתינו הקדושה מתוך יראת שמים
-            טהורה, אהבה ושמחה תמידית.
-            <br />
-            <br></br>
-            <b>ובכן יהי רצון מלפניך,</b> מלך רם ונישא שתברכם בברכת שמיים ותזכם להיפקד
-            בזרע קודש של קיימא להעמיד דורי דורות של בנים ובנות צדיקים וישרים, כולם
-            שומרי תורה ומקיימי מצוות מתוך יראת שמים טהורה ובריאות איתנה, ויראו הם רוב
-            נחת ואושר, ופרוש סוכת שלומך על כל יוצאי חלציהם ועל כל המחותנים שיחיו,
-            ונזכה כולנו יחד להקביל פני משיח צדקינו, לראות בבנין בית מקדשנו ותפארתנו
-            בכלל עמך בית ישראל במהרה בימינו, אמן.
-          </p>
-        </CardContent>
-      </Card>
+            >
+              רבונו של עולם בשעה בה עומדים <br />
+              <b> החתן {firstName}</b>, <br />
+              <b> והכלה {lastName}</b> <br />
+              תחת החופה לבנות בית נאמן בישראל, אנא ברחמיך הרבים זכם להקים בית כשר ונאמן
+              ויהיה ביתם בנין עדי עד על אדני התורה והיראה, ותשרה שכינתך בביתם מתוך אהבה
+              ואחוה, הבנה שלום ורעות. תן להם חיים ארוכים וטובים של שמחה אמיתית ופנימית
+              מתוך יישוב הדעת ושלווה ובריאות איתנה, ברכם בכל מיני ברכה ותשפיע עליהם משפע
+              אוצרך הטוב, והצליחם ברוחניות ובגשמיות בכל מיני דמיטב, פרנסה בכבוד וברווח,
+              ותזכם במקום יישוב נח ומוצלח, לקיים כל דברי תורתינו הקדושה מתוך יראת שמים
+              טהורה, אהבה ושמחה תמידית.
+              <br />
+              <br></br>
+              <b>ובכן יהי רצון מלפניך,</b> מלך רם ונישא שתברכם בברכת שמיים ותזכם להיפקד
+              בזרע קודש של קיימא להעמיד דורי דורות של בנים ובנות צדיקים וישרים, כולם
+              שומרי תורה ומקיימי מצוות מתוך יראת שמים טהורה ובריאות איתנה, ויראו הם רוב
+              נחת ואושר, ופרוש סוכת שלומך על כל יוצאי חלציהם ועל כל המחותנים שיחיו,
+              ונזכה כולנו יחד להקביל פני משיח צדקינו, לראות בבנין בית מקדשנו ותפארתנו
+              בכלל עמך בית ישראל במהרה בימינו, אמן.
+            </p>
+          </CardContent>
+        </Card>
 
-      {/* כרטיס מילוי פרטים */}
-      <Card sx={{
-        gridRow: "1 / 2", // נמצא בשורה הראשונה (מול התפילה)
-        gridColumn: "2 / 2", // נמצא בעמודה השנייה (באמצע)
-        width: "50%", // חצי מסך
-        maxWidth: "500px",
-        padding: "1.5rem",
-        boxShadow: 3,
-        justifySelf: "center",
-        bgcolor:"rgba(0, 41, 97, 0.78)",
-      }}>
-        <CardContent>
-          <h2 style={{ color: "white", textAlign: "center" }}>הכניסו את שמות החתן והכלה</h2>
-          <TextField
-            label="שם החתן"
-            variant="outlined"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            fullWidth
-            sx={{
-              border: "2px solid white",
-              input: { color: "white" },
-              mt: 2,
-            }}
-
-          />
-          <TextField
-            label="שם הכלה"
-            variant="outlined"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            fullWidth
-            sx={{
-              border: "2px solid white",
-              input: { color: "white" },
-              mt: 2,
-            }}
-          />
-
-
-        </CardContent>
-        
-      </Card>
-      <Box
-  sx={{
-    width: "80%",  // מתאים את הרוחב לתצוגה
-    height: "60px",  // גובה קבוע כדי לא לתפוס יותר מדי מקום
-    display: "flex",
-    alignItems: "center",  // שמירת האלמנטים במרכז אנכית
-    justifyContent: "center",
-    backgroundColor: "#eee",
-    borderRadius: "8px",
-    margin: "0 auto",  // מרכז את ה-Toolbar בעמוד
-  }}
->
-  <TextEditorToolbar onStyleChange={(newStyle) => setTextStyle({ ...textStyle, ...newStyle })} />
-</Box>
-
-      <Box
-        sx={{
-          gridRow: "3 / 3",
-          gridColumn: "2 / 3",
+        <Box sx={{ 
+          flex: 1,
           display: "flex",
-          flexWrap: "nowrap",
-          overflowX: "auto",
-          justifyContent: "center",
-          gap: "10px",
-          mt: 1, // שמרתי על הפרדה קטנה מהרקעים
-        }}
-      >
-        {backgrounds.map((bg) => (
-          <Box
-            key={bg}
-            onClick={() => setSelectedBackground(bg)}
-            sx={{
-              width: "100px",
-              height: "120px",
-              backgroundImage: `url(${bg})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              border: selectedBackground === bg ? "4px solid white" : "2px solid white",
-              cursor: "pointer",
-              borderRadius: "5px",
-            }}
-          />
-        ))}
+          flexDirection: "column",
+          gap: "20px"
+        }}>
+          <Card sx={{
+            bgcolor: "rgba(255, 255, 255, 0.1)",
+            padding: "1.5rem",
+            boxShadow: 3,
+          }}>
+            <CardContent>
+              <Typography variant="h6" sx={{ color: "white", textAlign: "center", mb: 2 }}>
+                הכניסו את שמות החתן והכלה
+              </Typography>
+              
+              <TextField
+                label="שם החתן"
+                variant="outlined"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                fullWidth
+                InputProps={{
+                  style: { textAlign: 'right' }
+                }}
+                sx={{
+                  mb: 2,
+                  "& .MuiOutlinedInput-root": {
+                    color: "white",
+                    "& fieldset": { borderColor: "rgba(255, 255, 255, 0.3)" }
+                  },
+                  "& .MuiInputLabel-root": { 
+                    color: "white",
+                    right: "1.75rem",
+                    left: "auto",
+                    transformOrigin: "right"
+                  }
+                }}
+              />
+              
+              <TextField
+                label="שם הכלה"
+                variant="outlined"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                fullWidth
+                InputProps={{
+                  style: { textAlign: 'right' }
+                }}
+                sx={{
+                  mb: 2,
+                  "& .MuiOutlinedInput-root": {
+                    color: "white",
+                    "& fieldset": { borderColor: "rgba(255, 255, 255, 0.3)" }
+                  },
+                  "& .MuiInputLabel-root": { 
+                    color: "white",
+                    right: "1.75rem",
+                    left: "auto",
+                    transformOrigin: "right"
+                  }
+                }}
+              />
+
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleDownloadPDF}
+                sx={{
+                  width: "100%",
+                  py: 2,
+                  fontSize: "1.2rem",
+                  mt: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 1,
+                  background: isPulsing 
+                    ? "linear-gradient(90deg, #3f51b5, #6573c3, #3f51b5)"
+                    : "#3f51b5",
+                  backgroundSize: "200% auto",
+                  animation: isPulsing 
+                    ? "shine 2s linear infinite"
+                    : "none",
+                  boxShadow: isPulsing 
+                    ? "0 0 20px rgba(63, 81, 181, 0.6)" 
+                    : "0 4px 6px rgba(0,0,0,0.1)",
+                  transition: "all 0.3s ease",
+                  "&:hover": { 
+                    transform: "scale(1.05)",
+                    boxShadow: "0 6px 20px rgba(0,0,0,0.2)"
+                  },
+                  "&:active": {
+                    transform: "scale(0.95)"
+                  },
+                  "@keyframes shine": {
+                    "0%": { backgroundPosition: "0% center" },
+                    "100%": { backgroundPosition: "200% center" }
+                  }
+                }}
+              >
+                <Download sx={{ fontSize: "1.5rem" }} />
+                הורד ל-PDF
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card sx={{
+            padding: "1rem",
+            boxShadow: 3,
+            bgcolor: "rgba(255, 255, 255, 0.1)",
+          }}>
+            <CardContent>
+              <Typography variant="h6" sx={{ color: "white", textAlign: "center", mb: 2 }}>
+                עיצוב טקסט
+              </Typography>
+              
+              <TextEditorToolbar onStyleChange={(newStyle) => setTextStyle({ ...textStyle, ...newStyle })} />
+            </CardContent>
+          </Card>
+
+          <Card sx={{
+            padding: "1rem",
+            boxShadow: 3,
+            bgcolor: "rgba(255, 255, 255, 0.1)",
+          }}>
+            <CardContent>
+              <Typography variant="h6" sx={{ color: "white", textAlign: "center", mb: 2 }}>
+                בחירת רקע
+              </Typography>
+              
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "10px",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  {displayedBackgrounds.map((bg) => (
+                    <Box
+                      key={bg}
+                      onClick={() => setSelectedBackground(bg)}
+                      sx={{
+                        width: "100px",
+                        height: "120px",
+                        backgroundImage: `url(${bg})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        border: selectedBackground === bg ? "4px solid white" : "2px solid rgba(255,255,255,0.5)",
+                        cursor: "pointer",
+                        borderRadius: "5px",
+                        transition: "all 0.2s",
+                        "&:hover": { transform: "scale(1.05)" }
+                      }}
+                    />
+                  ))}
+                </Box>
+                
+                {totalPages > 1 && (
+                  <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => setCurrentBackgroundPage(prev => Math.max(0, prev - 1))}
+                      disabled={currentBackgroundPage === 0}
+                      sx={{ color: "white", borderColor: "white" }}
+                    >
+                      הקודם
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      onClick={() => setCurrentBackgroundPage(prev => Math.min(totalPages - 1, prev + 1))}
+                      disabled={currentBackgroundPage === totalPages - 1}
+                      sx={{ color: "white", borderColor: "white" }}
+                    >
+                      הבא
+                    </Button>
+                  </Box>
+                )}
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
       </Box>
-
-      <Button
-        color="primary"
-        onClick={handleDownloadPDF}
-        sx={{
-          gridRow: "3 / 4", // שינוי למיקום קרוב יותר לרקעים
-          gridColumn: "2 / 3",
-          mt: 0, // ביטול המרווח המיותר
-          alignSelf: "center", // שמור אותו במרכז
-
-        }}
-      >
-        הורד ל-PDF
-      </Button>
-
     </Box>
-    </Box>
-
   );
 };
 
