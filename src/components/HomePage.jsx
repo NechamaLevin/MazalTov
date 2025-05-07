@@ -14,7 +14,7 @@ function HomePage() {
         alignItems: "center",
         width: "100vw",
         height: "100vh",
-        backgroundImage :"url('reka1.jpg')",
+        backgroundImage :"url('/8888.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         textAlign: "center",
