@@ -14,7 +14,6 @@ function HomePage() {
         alignItems: "center",
         width: "100vw",
         height: "100vh",
-        backgroundColor:"rgba(0, 41, 97, 0.78)",
         backgroundImage :"url('reka1.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
