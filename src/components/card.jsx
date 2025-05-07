@@ -144,7 +144,10 @@ const LetterGenerator = () => {
   return (
     <Box
       sx={{
-        bgcolor: "rgba(0, 41, 97, 0.78)",
+        backgroundImage:"url('/reka4.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        //bgcolor: "#b1a096",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -159,13 +162,13 @@ const LetterGenerator = () => {
         position: "fixed",
         bottom: "20px",
         left: "5%",
-        transform: "translateX(-50%)",
-        animation: "bounce 2s infinite",
+        //transform: "translateX(-50%)",
+        //animation: "bounce 2s infinite",
         color: "white",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        zIndex: 10,
+         zIndex: 10,
         "@keyframes bounce": {
           "0%, 20%, 50%, 80%, 100%": {
             transform: "translateY(0) translateX(-50%)"
@@ -182,7 +185,7 @@ const LetterGenerator = () => {
         <KeyboardArrowDown />
       </Box>
 
-      <Typography variant="h4" sx={{ borderBottom: "2px solid #ccc", pb: 1, color: "white", mb: 2, textAlign: "center" }}>
+      <Typography variant="h4" sx={{ borderBottom: "3px solid #ccc", pb: 1, color: "#b1a096", mb: 2, textAlign: "center",fontSize: "3rem",textShadow: "0 0 15px broun" }}>
         תפילה לחופה
       </Typography>
       
@@ -206,7 +209,7 @@ const LetterGenerator = () => {
             padding: "2rem",
             boxShadow: 3,
             textAlign: "right",
-            background: `linear-gradient(rgba(255, 255, 255, 0.61), rgba(255, 255, 255, 0.5)), url(${selectedBackground})`,
+            background: `linear-gradient(rgba(250, 250, 250, 0.61), rgba(255, 255, 255, 0.5)), url(${selectedBackground})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -270,12 +273,12 @@ const LetterGenerator = () => {
           gap: "20px"
         }}>
           <Card sx={{
-            bgcolor: "rgba(255, 255, 255, 0.1)",
+            bgcolor: "rgba(255, 255, 255, 0.61)",
             padding: "1.5rem",
             boxShadow: 3,
           }}>
             <CardContent>
-              <Typography variant="h6" sx={{ color: "white", textAlign: "center", mb: 2 }}>
+              <Typography variant="h6" sx={{ color: "#b1a096", textAlign: "center", mb: 2 }}>
                 הכניסו את שמות החתן והכלה
               </Typography>
               
@@ -291,11 +294,11 @@ const LetterGenerator = () => {
                 sx={{
                   mb: 2,
                   "& .MuiOutlinedInput-root": {
-                    color: "white",
-                    "& fieldset": { borderColor: "rgba(255, 255, 255, 0.3)" }
+                    color: "#b1a096",
+                    "& fieldset": { borderColor: "#b1a096" }
                   },
                   "& .MuiInputLabel-root": { 
-                    color: "white",
+                    color: "#b1a096",
                     right: "1.75rem",
                     left: "auto",
                     transformOrigin: "right"
@@ -315,11 +318,11 @@ const LetterGenerator = () => {
                 sx={{
                   mb: 2,
                   "& .MuiOutlinedInput-root": {
-                    color: "white",
-                    "& fieldset": { borderColor: "rgba(255, 255, 255, 0.3)" }
+                    color: "#b1a096",
+                    "& fieldset": { borderColor: "#b1a096" }
                   },
                   "& .MuiInputLabel-root": { 
-                    color: "white",
+                    color: "#b1a096",
                     right: "1.75rem",
                     left: "auto",
                     transformOrigin: "right"
@@ -341,14 +344,14 @@ const LetterGenerator = () => {
                   justifyContent: "center",
                   gap: 1,
                   background: isPulsing 
-                    ? "linear-gradient(90deg, #3f51b5, #6573c3, #3f51b5)"
-                    : "#3f51b5",
+                    ? "linear-gradient(50deg,rgb(89, 56, 41),#b1a096,rgb(89, 56, 41))"
+                    : "#b1a096",
                   backgroundSize: "200% auto",
                   animation: isPulsing 
                     ? "shine 2s linear infinite"
                     : "none",
                   boxShadow: isPulsing 
-                    ? "0 0 20px rgba(63, 81, 181, 0.6)" 
+                    ? "0 0 20px #b1a096)" 
                     : "0 4px 6px rgba(0,0,0,0.1)",
                   transition: "all 0.3s ease",
                   "&:hover": { 
@@ -373,10 +376,10 @@ const LetterGenerator = () => {
           <Card sx={{
             padding: "1rem",
             boxShadow: 3,
-            bgcolor: "rgba(255, 255, 255, 0.1)",
+            bgcolor: "rgba(255, 255, 255, 0.61)",
           }}>
             <CardContent>
-              <Typography variant="h6" sx={{ color: "white", textAlign: "center", mb: 2 }}>
+              <Typography variant="h6" sx={{ color: "#b1a096", textAlign: "center", mb: 2 }}>
                 עיצוב טקסט
               </Typography>
               
@@ -387,10 +390,10 @@ const LetterGenerator = () => {
           <Card sx={{
             padding: "1rem",
             boxShadow: 3,
-            bgcolor: "rgba(255, 255, 255, 0.1)",
+            bgcolor: "rgba(255, 255, 255, 0.61)#b1a096",
           }}>
             <CardContent>
-              <Typography variant="h6" sx={{ color: "white", textAlign: "center", mb: 2 }}>
+              <Typography variant="h6" sx={{ color: "#b1a096", textAlign: "center", mb: 2 }}>
                 בחירת רקע
               </Typography>
               
@@ -436,7 +439,7 @@ const LetterGenerator = () => {
                       variant="outlined"
                       onClick={() => setCurrentBackgroundPage(prev => Math.max(0, prev - 1))}
                       disabled={currentBackgroundPage === 0}
-                      sx={{ color: "white", borderColor: "white" }}
+                      sx={{ color: "#b1a096", borderColor: "white" }}
                     >
                       הקודם
                     </Button>
@@ -444,7 +447,7 @@ const LetterGenerator = () => {
                       variant="outlined"
                       onClick={() => setCurrentBackgroundPage(prev => Math.min(totalPages - 1, prev + 1))}
                       disabled={currentBackgroundPage === totalPages - 1}
-                      sx={{ color: "white", borderColor: "white" }}
+                      sx={{ color: "#b1a096", borderColor: "white" }}
                     >
                       הבא
                     </Button>
