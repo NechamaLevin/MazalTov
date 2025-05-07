@@ -15,6 +15,8 @@ function HomePage() {
         width: "100vw",
         height: "100vh",
         backgroundColor:"rgba(0, 41, 97, 0.78)",
+        backgroundImage :"url('reka3.jpg')",
+        backgroundSize: "cover",
         backgroundPosition: "center",
         textAlign: "center",
         position: "relative",
@@ -47,7 +49,7 @@ function HomePage() {
           style={{
             fontSize: "1.5rem",
             padding: "15px 40px",
-            backgroundColor: "black",
+            backgroundColor: "#b1a096",
             border: "2px solid white",
             color: "white",
             textShadow: "0 0 8px white",
