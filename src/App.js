@@ -1,6 +1,5 @@
 import "./App.css";
 import AppRouter from "./components/AppRouter";
-import EmailEditor from "./components/Email";
 
 function App() {
   return (
