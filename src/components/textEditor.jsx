@@ -13,7 +13,7 @@ import "@fontsource/frank-ruhl-libre";
 import "@fontsource/secular-one";
 import "@fontsource/miriam-libre";
 import "@fontsource/ibm-plex-sans-hebrew";
-const TextEditorToolbar = ({ onStyleChange }) => {
+const TextEditorToolbar = ({ onStyleChange, currentStyle }) => {
   const [alignment, setAlignment] = useState("right");
   const [fontColor, setFontColor] = useState("#000000");
   const [selectedFont, setSelectedFont] = useState("Rubik");
@@ -37,7 +37,10 @@ const TextEditorToolbar = ({ onStyleChange }) => {
       onStyleChange({ textAlign: newAlignment });
     }
   };
-
+  const toggleStyle = (key, value, defaultOff = "normal") => {
+    const current = currentStyle?.[key];
+    onStyleChange({ [key]: current === value ? defaultOff : value });
+  };
   return (
     <Box sx={{ display: "flex", alignItems: "center", background: "#eee", padding: "10px", borderRadius: "8px" }}>
 
@@ -65,9 +68,9 @@ const TextEditorToolbar = ({ onStyleChange }) => {
       </IconButton>
 
       {/* 🔹 עיצוב פונט - מודגש, נטוי, קו תחתון */}
-      <IconButton onClick={() => onStyleChange({ fontWeight: "bold" })}><FormatBold /></IconButton>
-      <IconButton onClick={() => onStyleChange({ fontStyle: "italic" })}><FormatItalic /></IconButton>
-      <IconButton onClick={() => onStyleChange({ textDecoration: "underline" })}><FormatUnderlined /></IconButton>
+      <IconButton onClick={() => toggleStyle("fontWeight", "bold")}><FormatBold /></IconButton>
+      <IconButton onClick={() => toggleStyle("fontStyle", "italic")}><FormatItalic /></IconButton>
+      <IconButton onClick={() => toggleStyle("textDecoration", "underline", "none")}><FormatUnderlined /></IconButton>
       <Select
         value={selectedFont}
         onChange={(e) => {

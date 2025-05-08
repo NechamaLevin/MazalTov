@@ -383,7 +383,10 @@ const LetterGenerator = () => {
                 עיצוב טקסט
               </Typography>
               
-              <TextEditorToolbar onStyleChange={(newStyle) => setTextStyle({ ...textStyle, ...newStyle })} />
+              <TextEditorToolbar
+  onStyleChange={(newStyle) => setTextStyle({ ...textStyle, ...newStyle })}
+  currentStyle={textStyle}
+/>
             </CardContent>
           </Card>
 
