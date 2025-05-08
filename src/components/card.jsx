@@ -16,7 +16,7 @@ const LetterGenerator = () => {
   
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [selectedBackground, setSelectedBackground] = useState("666.jpg");
+  const [selectedBackground, setSelectedBackground] = useState("3333.jpg");
   
   const letterRef = useRef(null);
 
