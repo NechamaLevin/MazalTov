@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { motion } from "framer-motion";
+import LoveUsButton from "./Fidback";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ function HomePage() {
         >
 להורדת תפילה מותאמת אישית        </Button>
       </motion.div>
-    </div>
+      <LoveUsButton />    </div>
   );
 }
 

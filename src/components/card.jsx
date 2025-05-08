@@ -4,11 +4,15 @@ import { Button, Card, CardContent, TextField, Box, Typography ,Stack} from "@mu
 import html2pdf from "html2pdf.js";
 import TextEditorToolbar from './textEditor.jsx'
 import { Download, KeyboardArrowDown } from "@mui/icons-material";
+<<<<<<< HEAD
 import {IconButton, Link } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
+=======
+import LoveUsButton from "./Fidback.jsx";
+>>>>>>> 6dc3ca74bcd1167be70146aaaecd50923da65bf7
 
 const backgrounds = ["333.jpg", "444.jpg", "555.jpg", "666.jpg", "111.png", "222.jpg", "777.jpg.jpg","4444.jpg","5555.jpg","6666.jpg","7777.jpg","3333.jpg"];
 
@@ -21,7 +25,7 @@ const LetterGenerator = () => {
   
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [selectedBackground, setSelectedBackground] = useState("666.jpg");
+  const [selectedBackground, setSelectedBackground] = useState("3333.jpg");
   
   const letterRef = useRef(null);
 
@@ -387,7 +391,10 @@ const LetterGenerator = () => {
                 עיצוב טקסט
               </Typography>
               
-              <TextEditorToolbar onStyleChange={(newStyle) => setTextStyle({ ...textStyle, ...newStyle })} />
+              <TextEditorToolbar
+  onStyleChange={(newStyle) => setTextStyle({ ...textStyle, ...newStyle })}
+  currentStyle={textStyle}
+/>
             </CardContent>
           </Card>
 
@@ -462,6 +469,7 @@ const LetterGenerator = () => {
           </Card>
         </Box>
       </Box>
+<<<<<<< HEAD
       <Box
   component="footer"
   sx={{
@@ -505,6 +513,11 @@ const LetterGenerator = () => {
 </Box>
 
 
+=======
+         <LoveUsButton /> 
+    </Box>
+    
+>>>>>>> 6dc3ca74bcd1167be70146aaaecd50923da65bf7
   );
 };
 
