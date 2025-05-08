@@ -144,7 +144,7 @@ const LetterGenerator = () => {
   return (
     <Box
       sx={{
-        backgroundImage:"url('/reka4.jpg')",
+        backgroundImage:"url('/reka15.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         //bgcolor: "#b1a096",
@@ -185,7 +185,7 @@ const LetterGenerator = () => {
         <KeyboardArrowDown />
       </Box>
 
-      <Typography variant="h4" sx={{ borderBottom: "3px solid #ccc", pb: 1, color: "#b1a096", mb: 2, textAlign: "center",fontSize: "3rem",textShadow: "0 0 15px broun" }}>
+      <Typography variant="h4" sx={{ borderBottom: "3px solid #ccc", pb: 1, color: "#983f4b", mb: 2, textAlign: "center",fontSize: "3rem",textShadow: "0 0 15px broun" }}>
         תפילה לחופה
       </Typography>
       
@@ -278,7 +278,7 @@ const LetterGenerator = () => {
             boxShadow: 3,
           }}>
             <CardContent>
-              <Typography variant="h6" sx={{ color: "#b1a096", textAlign: "center", mb: 2 }}>
+              <Typography variant="h6" sx={{ color: "#983f4b", textAlign: "center", mb: 3 ,fontWeight:"bold"}}>
                 הכניסו את שמות החתן והכלה
               </Typography>
               
@@ -294,11 +294,11 @@ const LetterGenerator = () => {
                 sx={{
                   mb: 2,
                   "& .MuiOutlinedInput-root": {
-                    color: "#b1a096",
-                    "& fieldset": { borderColor: "#b1a096" }
+                    color: "#983f4b",
+                    "& fieldset": { borderColor: "#983f4b" }
                   },
                   "& .MuiInputLabel-root": { 
-                    color: "#b1a096",
+                    color: "#983f4b",
                     right: "1.75rem",
                     left: "auto",
                     transformOrigin: "right"
@@ -318,11 +318,11 @@ const LetterGenerator = () => {
                 sx={{
                   mb: 2,
                   "& .MuiOutlinedInput-root": {
-                    color: "#b1a096",
-                    "& fieldset": { borderColor: "#b1a096" }
+                    color: "#983f4b",
+                    "& fieldset": { borderColor: "#983f4b" }
                   },
                   "& .MuiInputLabel-root": { 
-                    color: "#b1a096",
+                    color: "#983f4b",
                     right: "1.75rem",
                     left: "auto",
                     transformOrigin: "right"
@@ -344,8 +344,8 @@ const LetterGenerator = () => {
                   justifyContent: "center",
                   gap: 1,
                   background: isPulsing 
-                    ? "linear-gradient(50deg,rgb(89, 56, 41),#b1a096,rgb(89, 56, 41))"
-                    : "#b1a096",
+                    ? "linear-gradient(50deg,rgba(192,204,160,255),#983f4b,rgba(192,204,160,255))"
+                    : "#c27d83",
                   backgroundSize: "200% auto",
                   animation: isPulsing 
                     ? "shine 2s linear infinite"
@@ -379,7 +379,7 @@ const LetterGenerator = () => {
             bgcolor: "rgba(255, 255, 255, 0.61)",
           }}>
             <CardContent>
-              <Typography variant="h6" sx={{ color: "#b1a096", textAlign: "center", mb: 2 }}>
+              <Typography variant="h6" sx={{ color: "#983f4b", textAlign: "center", mb: 2,fontWeight:"bold" }}>
                 עיצוב טקסט
               </Typography>
               
@@ -393,7 +393,7 @@ const LetterGenerator = () => {
             bgcolor: "rgba(255, 255, 255, 0.61)#b1a096",
           }}>
             <CardContent>
-              <Typography variant="h6" sx={{ color: "#b1a096", textAlign: "center", mb: 2 }}>
+              <Typography variant="h6" sx={{ color: "#983f4b", textAlign: "center", mb: 2 ,fontWeight:"bold"}}>
                 בחירת רקע
               </Typography>
               
@@ -439,7 +439,7 @@ const LetterGenerator = () => {
                       variant="outlined"
                       onClick={() => setCurrentBackgroundPage(prev => Math.max(0, prev - 1))}
                       disabled={currentBackgroundPage === 0}
-                      sx={{ color: "#b1a096", borderColor: "white" }}
+                      sx={{ color: "#c27d83", borderColor: "white" }}
                     >
                       הקודם
                     </Button>
@@ -447,7 +447,7 @@ const LetterGenerator = () => {
                       variant="outlined"
                       onClick={() => setCurrentBackgroundPage(prev => Math.min(totalPages - 1, prev + 1))}
                       disabled={currentBackgroundPage === totalPages - 1}
-                      sx={{ color: "#b1a096", borderColor: "white" }}
+                      sx={{ color: "#c27d83", borderColor: "white" }}
                     >
                       הבא
                     </Button>

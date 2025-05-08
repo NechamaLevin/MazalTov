@@ -75,7 +75,7 @@ const TextEditorToolbar = ({ onStyleChange }) => {
           onStyleChange({ fontFamily: e.target.value }); // שולח את הפונט למרכיב הראשי
         }}
         fullWidth
-        sx={{ backgroundColor: "#b1a096", color: "white", border: "2px solid white", mt: 2 }}
+        sx={{ backgroundColor: "#c27d83", color: "white", border: "2px solid white", mt: 2 }}
       >
         {fonts.map((font) => (
           <MenuItem key={font} value={font} style={{ fontFamily: font }}>

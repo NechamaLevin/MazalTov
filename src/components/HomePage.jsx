@@ -14,7 +14,7 @@ function HomePage() {
         alignItems: "center",
         width: "100vw",
         height: "100vh",
-        backgroundImage :"url('/8888.jpg')",
+        backgroundImage :"url('/reka16.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         textAlign: "center",
@@ -48,7 +48,7 @@ function HomePage() {
           style={{
             fontSize: "1.5rem",
             padding: "15px 40px",
-            backgroundColor: "#b1a096",
+            backgroundColor: "#c27d83",
             border: "2px solid white",
             color: "white",
             textShadow: "0 0 8px white",
