@@ -1,9 +1,14 @@
 
 import React, { useState, useRef } from "react";
-import { Button, Card, CardContent, TextField, Box, Typography } from "@mui/material";
+import { Button, Card, CardContent, TextField, Box, Typography ,Stack} from "@mui/material";
 import html2pdf from "html2pdf.js";
 import TextEditorToolbar from './textEditor.jsx'
 import { Download, KeyboardArrowDown } from "@mui/icons-material";
+import {IconButton, Link } from '@mui/material';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneIcon from '@mui/icons-material/Phone';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
 
 const backgrounds = ["333.jpg", "444.jpg", "555.jpg", "666.jpg", "111.png", "222.jpg", "777.jpg.jpg","4444.jpg","5555.jpg","6666.jpg","7777.jpg","3333.jpg"];
 
@@ -152,9 +157,8 @@ const LetterGenerator = () => {
         flexDirection: "column",
         alignItems: "center",
         gap: "20px",
-        p: 3,
         minHeight: "100vh",
-        overflow: "auto",
+        overflow: "hidden",
         position: "relative"
       }}
     >
@@ -458,7 +462,49 @@ const LetterGenerator = () => {
           </Card>
         </Box>
       </Box>
-    </Box>
+      <Box
+  component="footer"
+  sx={{
+    width: '100vw',
+    backgroundColor: '#c27d83',
+    boxSizing: 'border-box',
+    color: '#ffffff',
+    marginBottom: 0,
+   // mt: 8,
+    py: 4,
+    px: 2,
+    textAlign: 'center',
+  }}
+>
+<Typography variant="h6" sx={{ fontWeight: 'bold' }} >
+       ELISHEVA & NECHAMI TECHNOLOGY
+      </Typography>
+
+      <Stack
+        direction="row"
+        spacing={1}
+        justifyContent="center"
+        alignItems="center"
+        sx={{ mt: 1 }}
+      >
+        <EmailIcon fontSize="small" />
+        <Typography variant="body2">info@example.com</Typography>
+      </Stack>
+
+      <Stack
+        direction="row"
+        spacing={1}
+        justifyContent="center"
+        alignItems="center"
+        sx={{ mt: 0.5 }}
+      >
+        <PhoneIcon fontSize="small" />
+        <Typography variant="body2">050-1234567</Typography>
+      </Stack>
+  </Box>
+</Box>
+
+
   );
 };
 

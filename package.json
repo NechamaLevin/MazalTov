@@ -18,7 +18,7 @@
     "@fontsource/rubik": "^5.2.5",
     "@fontsource/secular-one": "^5.2.5",
     "@fontsource/varela-round": "^5.2.5",
-    "@mui/icons-material": "^6.4.9",
+    "@mui/icons-material": "^6.4.11",
     "@mui/material": "^6.4.9",
     "ajv-keywords": "^5.1.0",
     "cra-template": "1.2.0",
