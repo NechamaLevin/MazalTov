@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { motion } from "framer-motion";
 import LoveUsButton from "./Fidback";
+import RichEditor from "./Email";
 
 function HomePage() {
   const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
 
   return (
     <div
@@ -15,14 +18,13 @@ function HomePage() {
         alignItems: "center",
         width: "100vw",
         height: "100vh",
-        backgroundImage :"url('/reka16.jpg')",
+        backgroundImage: "url('/reka16.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         textAlign: "center",
         position: "relative",
       }}
     >
-      {/* כותרת עם אנימציה של ציפה מלמעלה */}
       <motion.h1
         style={{
           color: "white",
@@ -37,7 +39,6 @@ function HomePage() {
         תפילה לחופה בקלות וללא עלות
       </motion.h1>
 
-      {/* כפתור עם אנימציה של פעימה וזוהר */}
       <motion.div
         initial={{ scale: 1 }}
         animate={{ scale: [1, 1.05, 1] }}
@@ -54,14 +55,21 @@ function HomePage() {
             color: "white",
             textShadow: "0 0 8px white",
             transition: "0.3s",
-            marginTop: "20px", // מזיז את הכפתור קצת למעלה
+            marginTop: "20px",
           }}
           onMouseOver={(e) => (e.target.style.boxShadow = "0 0 15px white")}
           onMouseOut={(e) => (e.target.style.boxShadow = "none")}
         >
-להורדת תפילה מותאמת אישית        </Button>
+          להורדת תפילה מותאמת אישית
+        </Button>
       </motion.div>
-      <LoveUsButton />    </div>
+
+      {/* כפתור שפותח את הדיאלוג */}
+      <LoveUsButton onClick={() => setOpenDialog(true)} />
+
+      {/* הדיאלוג עצמו */}
+      <RichEditor open={openDialog} onClose={() => setOpenDialog(false)} />
+    </div>
   );
 }
 

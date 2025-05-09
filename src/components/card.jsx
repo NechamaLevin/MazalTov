@@ -7,6 +7,7 @@ import { Download, KeyboardArrowDown } from "@mui/icons-material";
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LoveUsButton from "./Fidback.jsx";
+import RichEditor from "./Email.jsx";
 
 const backgrounds = ["333.jpg", "444.jpg", "555.jpg", "666.jpg", "111.png", "222.jpg", "777.jpg.jpg","4444.jpg","5555.jpg","6666.jpg","7777.jpg","3333.jpg"];
 
@@ -20,6 +21,8 @@ const LetterGenerator = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [selectedBackground, setSelectedBackground] = useState("3333.jpg");
+  const [openDialog, setOpenDialog] = useState(false);
+
   
   const letterRef = useRef(null);
 
@@ -504,8 +507,10 @@ const LetterGenerator = () => {
         <Typography variant="body2">050-1234567</Typography>
       </Stack>
   </Box>
-  <LoveUsButton /> 
-</Box>
+  <LoveUsButton onClick={() => setOpenDialog(true)} />
+
+      {/* הדיאלוג עצמו */}
+      <RichEditor open={openDialog} onClose={() => setOpenDialog(false)} /></Box>
          
   
     
