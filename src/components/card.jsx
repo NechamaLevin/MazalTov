@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import html2pdf from "html2pdf.js";
 import TextEditorToolbar from "./textEditor.jsx";
-import { Download, KeyboardArrowDown } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import LoveUsButton from "./Fidback.jsx";
