@@ -19,6 +19,7 @@ import { CacheProvider, ThemeProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { prefixer } from "stylis";
 import rtlPlugin from "stylis-plugin-rtl";
+import RichEditor from "./Email.jsx";
 
 const backgrounds = [
   "333.jpg",
@@ -53,6 +54,7 @@ const LetterGenerator = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [selectedBackground, setSelectedBackground] = useState("3333.jpg");
+  const [openDialog, setOpenDialog] = useState(false);
   const letterRef = useRef(null);
 
   const [currentBackgroundPage, setCurrentBackgroundPage] = useState(0);
@@ -619,8 +621,10 @@ const LetterGenerator = () => {
           <Typography variant="body2">050-1234567</Typography>
         </Stack>
       </Box>
-      <LoveUsButton />
-    </Box>
+  <LoveUsButton onClick={() => setOpenDialog(true)} />
+
+      {/* הדיאלוג עצמו */}
+      <RichEditor open={openDialog} onClose={() => setOpenDialog(false)} />    </Box>
   );
 };
 
