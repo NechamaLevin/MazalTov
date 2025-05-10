@@ -4,9 +4,7 @@ import { IconButton, ToggleButtonGroup, ToggleButton, Box, MenuItem, Select } fr
 
 import "@fontsource/assistant";
 import "@fontsource/rubik";
-import "@fontsource/heebo";
 import "@fontsource/varela-round";
-import "@fontsource/noto-sans-hebrew";
 import "@fontsource/alef";
 import "@fontsource/david-libre";
 import "@fontsource/frank-ruhl-libre";
@@ -19,9 +17,7 @@ const TextEditorToolbar = ({ onStyleChange, currentStyle }) => {
   const [selectedFont, setSelectedFont] = useState("Rubik");
   const fonts = ["Arial", "David", "Narkisim", "Rubik", "Assistant", "Varela Round", "Assistant",
     "Rubik",
-    "Heebo",
     "Varela Round",
-    "Noto Sans Hebrew",
     "Alef",
     "David Libre",
     "Frank Ruhl Libre",
