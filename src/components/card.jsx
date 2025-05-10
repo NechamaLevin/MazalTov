@@ -1,26 +1,67 @@
-
 import React, { useState, useRef } from "react";
-import { Button, Card, CardContent, TextField, Box, Typography ,Stack} from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  TextField,
+  Box,
+  Typography,
+  Stack,
+} from "@mui/material";
 import html2pdf from "html2pdf.js";
-import TextEditorToolbar from './textEditor.jsx'
+import TextEditorToolbar from "./textEditor.jsx";
 import { Download, KeyboardArrowDown } from "@mui/icons-material";
-import EmailIcon from '@mui/icons-material/Email';
-import PhoneIcon from '@mui/icons-material/Phone';
+import EmailIcon from "@mui/icons-material/Email";
+import PhoneIcon from "@mui/icons-material/Phone";
 import LoveUsButton from "./Fidback.jsx";
+import { createTheme } from "@mui/material/styles";
+import { CacheProvider, ThemeProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+import { prefixer } from "stylis";
+import rtlPlugin from "stylis-plugin-rtl";
 
-const backgrounds = ["333.jpg", "444.jpg", "555.jpg", "666.jpg", "111.png", "222.jpg", "777.jpg.jpg","4444.jpg","5555.jpg","6666.jpg","7777.jpg","3333.jpg"];
+const backgrounds = [
+  "333.jpg",
+  "444.jpg",
+  "555.jpg",
+  "666.jpg",
+  "111.png",
+  "222.jpg",
+  "777.jpg.jpg",
+  "4444.jpg",
+  "5555.jpg",
+  "6666.jpg",
+  "7777.jpg",
+  "3333.jpg",
+];
 
 const LetterGenerator = () => {
-  const [textStyle, setTextStyle] = useState({ 
-    textAlign: "right", 
+  const [textStyle, setTextStyle] = useState({
+    textAlign: "right",
     color: "#000000",
-    fontFamily: "Rubik"
+    fontFamily: "Rubik",
   });
-  
+  const theme = createTheme({
+    direction: "rtl",
+  });
+  // const rtlCache = createCache({
+  //   key: 'muirtl',
+  //   stylisPlugins: [prefixer, rtlPlugin],
+  // });
+  const cacheRtl = createCache({
+    key: "muirtl",
+    stylisPlugins: [prefixer, rtlPlugin],
+    color: "#0D1E46",
+  });
+
+  // function Rtl(props) {
+  //   return <CacheProvider value={rtlCache}>{props.children}</CacheProvider>;
+  // }
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [selectedBackground, setSelectedBackground] = useState("3333.jpg");
-  
+
   const letterRef = useRef(null);
 
   const [currentBackgroundPage, setCurrentBackgroundPage] = useState(0);
@@ -38,12 +79,12 @@ const LetterGenerator = () => {
   React.useEffect(() => {
     setIsPulsing(true);
     const timer = setTimeout(() => setIsPulsing(false), 2000);
-    
+
     const interval = setInterval(() => {
       setIsPulsing(true);
       setTimeout(() => setIsPulsing(false), 2000);
     }, 10000);
-    
+
     return () => {
       clearTimeout(timer);
       clearInterval(interval);
@@ -147,7 +188,7 @@ const LetterGenerator = () => {
   return (
     <Box
       sx={{
-        backgroundImage:"url('/reka15.jpg')",
+        backgroundImage: "url('/reka15.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         //bgcolor: "#b1a096",
@@ -157,44 +198,59 @@ const LetterGenerator = () => {
         gap: "20px",
         minHeight: "100vh",
         overflow: "hidden",
-        position: "relative"
+        position: "relative",
       }}
     >
-      <Box sx={{
-        position: "fixed",
-        bottom: "20px",
-        left: "5%",
-        //transform: "translateX(-50%)",
-        //animation: "bounce 2s infinite",
-        color: "white",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-         zIndex: 10,
-        "@keyframes bounce": {
-          "0%, 20%, 50%, 80%, 100%": {
-            transform: "translateY(0) translateX(-50%)"
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: "20px",
+          left: "5%",
+          //transform: "translateX(-50%)",
+          //animation: "bounce 2s infinite",
+          color: "white",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          zIndex: 10,
+          "@keyframes bounce": {
+            "0%, 20%, 50%, 80%, 100%": {
+              transform: "translateY(0) translateX(-50%)",
+            },
+            "40%": {
+              transform: "translateY(-20px) translateX(-50%)",
+            },
+            "60%": {
+              transform: "translateY(-10px) translateX(-50%)",
+            },
           },
-          "40%": {
-            transform: "translateY(-20px) translateX(-50%)"
-          },
-          "60%": {
-            transform: "translateY(-10px) translateX(-50%)"
-          }
-        }
-      }}>
-        <Typography variant="body2" sx={{ mb: 1 }}>גלול למטה להמשך</Typography>
+        }}
+      >
+        <Typography variant="body2" sx={{ mb: 1 }}>
+          גלול למטה להמשך
+        </Typography>
         <KeyboardArrowDown />
       </Box>
 
-      <Typography variant="h4" sx={{ borderBottom: "3px solid #ccc", pb: 1, color: "#983f4b", mb: 2, textAlign: "center",fontSize: "3rem",textShadow: "0 0 15px broun" }}>
+      <Typography
+        variant="h4"
+        sx={{
+          borderBottom: "3px solid #ccc",
+          pb: 1,
+          color: "#983f4b",
+          mb: 2,
+          textAlign: "center",
+          fontSize: "3rem",
+          textShadow: "0 0 15px broun",
+        }}
+      >
         תפילה לחופה
       </Typography>
-      
+
       <Box
         sx={{
           display: "flex",
-          flexDirection: {xs: "column", md: "row"},
+          flexDirection: { xs: "column", md: "row" },
           gap: "20px",
           width: "100%",
           maxWidth: "1200px",
@@ -206,8 +262,8 @@ const LetterGenerator = () => {
         <Card
           ref={letterRef}
           sx={{
-            width: {xs: "100%", md: "7.4cm"},
-            height: {xs: "auto", md: "21cm"},
+            width: { xs: "100%", md: "7.4cm" },
+            height: { xs: "auto", md: "21cm" },
             padding: "2rem",
             boxShadow: 3,
             textAlign: "right",
@@ -217,7 +273,7 @@ const LetterGenerator = () => {
             backgroundRepeat: "no-repeat",
             position: "relative",
             color: "black",
-            alignSelf: "flex-start"
+            alignSelf: "flex-start",
           }}
         >
           <CardContent>
@@ -233,7 +289,7 @@ const LetterGenerator = () => {
                 borderBottom: "2px solid rgb(2, 2, 2)",
                 borderTop: "2px solid rgb(0, 0, 0)",
                 background: "rgba(255,255,255,0.7)",
-                borderRadius: "8px"
+                borderRadius: "8px",
               }}
             >
               תפילה לחופה
@@ -249,88 +305,126 @@ const LetterGenerator = () => {
               רבונו של עולם בשעה בה עומדים <br />
               <b> החתן {firstName}</b>, <br />
               <b> והכלה {lastName}</b> <br />
-              תחת החופה לבנות בית נאמן בישראל, אנא ברחמיך הרבים זכם להקים בית כשר ונאמן
-              ויהיה ביתם בנין עדי עד על אדני התורה והיראה, ותשרה שכינתך בביתם מתוך אהבה
-              ואחוה, הבנה שלום ורעות. תן להם חיים ארוכים וטובים של שמחה אמיתית ופנימית
-              מתוך יישוב הדעת ושלווה ובריאות איתנה, ברכם בכל מיני ברכה ותשפיע עליהם משפע
-              אוצרך הטוב, והצליחם ברוחניות ובגשמיות בכל מיני דמיטב, פרנסה בכבוד וברווח,
-              ותזכם במקום יישוב נח ומוצלח, לקיים כל דברי תורתינו הקדושה מתוך יראת שמים
+              תחת החופה לבנות בית נאמן בישראל, אנא ברחמיך הרבים זכם להקים בית
+              כשר ונאמן ויהיה ביתם בנין עדי עד על אדני התורה והיראה, ותשרה
+              שכינתך בביתם מתוך אהבה ואחוה, הבנה שלום ורעות. תן להם חיים ארוכים
+              וטובים של שמחה אמיתית ופנימית מתוך יישוב הדעת ושלווה ובריאות
+              איתנה, ברכם בכל מיני ברכה ותשפיע עליהם משפע אוצרך הטוב, והצליחם
+              ברוחניות ובגשמיות בכל מיני דמיטב, פרנסה בכבוד וברווח, ותזכם במקום
+              יישוב נח ומוצלח, לקיים כל דברי תורתינו הקדושה מתוך יראת שמים
               טהורה, אהבה ושמחה תמידית.
               <br />
               <br></br>
-              <b>ובכן יהי רצון מלפניך,</b> מלך רם ונישא שתברכם בברכת שמיים ותזכם להיפקד
-              בזרע קודש של קיימא להעמיד דורי דורות של בנים ובנות צדיקים וישרים, כולם
-              שומרי תורה ומקיימי מצוות מתוך יראת שמים טהורה ובריאות איתנה, ויראו הם רוב
-              נחת ואושר, ופרוש סוכת שלומך על כל יוצאי חלציהם ועל כל המחותנים שיחיו,
-              ונזכה כולנו יחד להקביל פני משיח צדקינו, לראות בבנין בית מקדשנו ותפארתנו
-              בכלל עמך בית ישראל במהרה בימינו, אמן.
+              <b>ובכן יהי רצון מלפניך,</b> מלך רם ונישא שתברכם בברכת שמיים ותזכם
+              להיפקד בזרע קודש של קיימא להעמיד דורי דורות של בנים ובנות צדיקים
+              וישרים, כולם שומרי תורה ומקיימי מצוות מתוך יראת שמים טהורה ובריאות
+              איתנה, ויראו הם רוב נחת ואושר, ופרוש סוכת שלומך על כל יוצאי חלציהם
+              ועל כל המחותנים שיחיו, ונזכה כולנו יחד להקביל פני משיח צדקינו,
+              לראות בבנין בית מקדשנו ותפארתנו בכלל עמך בית ישראל במהרה בימינו,
+              אמן.
             </p>
           </CardContent>
         </Card>
 
-        <Box sx={{ 
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px"
-        }}>
-          <Card sx={{
-            bgcolor: "rgba(255, 255, 255, 0.61)",
-            padding: "1.5rem",
-            boxShadow: 3,
-          }}>
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+        >
+          <Card
+            sx={{
+              bgcolor: "rgba(255, 255, 255, 0.61)",
+              padding: "1.5rem",
+              boxShadow: 3,
+            }}
+          >
             <CardContent>
-              <Typography variant="h6" sx={{ color: "#983f4b", textAlign: "center", mb: 3 ,fontWeight:"bold"}}>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "#983f4b",
+                  textAlign: "center",
+                  mb: 3,
+                  fontWeight: "bold",
+                }}
+              >
                 הכניסו את שמות החתן והכלה
               </Typography>
-              
-              <TextField
-                label="שם החתן"
-                variant="outlined"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                fullWidth
-                InputProps={{
-                  style: { textAlign: 'right' }
-                }}
-                sx={{
-                  mb: 2,
-                  "& .MuiOutlinedInput-root": {
-                    color: "#983f4b",
-                    "& fieldset": { borderColor: "#983f4b" }
-                  },
-                  "& .MuiInputLabel-root": { 
-                    color: "#983f4b",
-                    right: "1.75rem",
-                    left: "auto",
-                    transformOrigin: "right"
-                  }
-                }}
-              />
-              
-              <TextField
-                label="שם הכלה"
-                variant="outlined"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                fullWidth
-                InputProps={{
-                  style: { textAlign: 'right' }
-                }}
-                sx={{
-                  mb: 2,
-                  "& .MuiOutlinedInput-root": {
-                    color: "#983f4b",
-                    "& fieldset": { borderColor: "#983f4b" }
-                  },
-                  "& .MuiInputLabel-root": { 
-                    color: "#983f4b",
-                    right: "1.75rem",
-                    left: "auto",
-                    transformOrigin: "right"
-                  }
-                }}
-              />
+
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <div dir="rtl">
+                    <TextField
+                      label="שם החתן"
+                      variant="outlined"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      fullWidth
+                      sx={{
+                        mb: 2,
+                        "& .MuiOutlinedInput-root": {
+                          color: "#983f4b",
+                          "& fieldset": {
+                            borderColor: "#983f4b",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "#983f4b",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#983f4b",
+                            borderWidth: "2px",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "#983f4b",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "#983f4b",
+                        },
+                      }}
+                    />
+                  </div>
+                </ThemeProvider>
+              </CacheProvider>
+
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <div dir="rtl">
+                    <TextField
+                      label="שם הכלה"
+                      variant="outlined"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      fullWidth
+                      sx={{
+                        mb: 2,
+                        "& .MuiOutlinedInput-root": {
+                          color: "#983f4b",
+                          "& fieldset": {
+                            borderColor: "#983f4b",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "#983f4b",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#983f4b",
+                            borderWidth: "2px",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "#983f4b",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "#983f4b",
+                        },
+                      }}
+                    />
+                  </div>
+                </ThemeProvider>
+              </CacheProvider>
 
               <Button
                 variant="contained"
@@ -345,28 +439,26 @@ const LetterGenerator = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   gap: 1,
-                  background: isPulsing 
+                  background: isPulsing
                     ? "linear-gradient(50deg,rgba(192,204,160,255),#983f4b,rgba(192,204,160,255))"
                     : "#c27d83",
                   backgroundSize: "200% auto",
-                  animation: isPulsing 
-                    ? "shine 2s linear infinite"
-                    : "none",
-                  boxShadow: isPulsing 
-                    ? "0 0 20px #b1a096)" 
+                  animation: isPulsing ? "shine 2s linear infinite" : "none",
+                  boxShadow: isPulsing
+                    ? "0 0 20px #b1a096)"
                     : "0 4px 6px rgba(0,0,0,0.1)",
                   transition: "all 0.3s ease",
-                  "&:hover": { 
+                  "&:hover": {
                     transform: "scale(1.05)",
-                    boxShadow: "0 6px 20px rgba(0,0,0,0.2)"
+                    boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
                   },
                   "&:active": {
-                    transform: "scale(0.95)"
+                    transform: "scale(0.95)",
                   },
                   "@keyframes shine": {
                     "0%": { backgroundPosition: "0% center" },
-                    "100%": { backgroundPosition: "200% center" }
-                  }
+                    "100%": { backgroundPosition: "200% center" },
+                  },
                 }}
               >
                 <Download sx={{ fontSize: "1.5rem" }} />
@@ -375,33 +467,55 @@ const LetterGenerator = () => {
             </CardContent>
           </Card>
 
-          <Card sx={{
-            padding: "1rem",
-            boxShadow: 3,
-            bgcolor: "rgba(255, 255, 255, 0.61)",
-          }}>
+          <Card
+            sx={{
+              padding: "1rem",
+              boxShadow: 3,
+              bgcolor: "rgba(255, 255, 255, 0.61)",
+            }}
+          >
             <CardContent>
-              <Typography variant="h6" sx={{ color: "#983f4b", textAlign: "center", mb: 2,fontWeight:"bold" }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "#983f4b",
+                  textAlign: "center",
+                  mb: 2,
+                  fontWeight: "bold",
+                }}
+              >
                 עיצוב טקסט
               </Typography>
-              
+
               <TextEditorToolbar
-  onStyleChange={(newStyle) => setTextStyle({ ...textStyle, ...newStyle })}
-  currentStyle={textStyle}
-/>
+                onStyleChange={(newStyle) =>
+                  setTextStyle({ ...textStyle, ...newStyle })
+                }
+                currentStyle={textStyle}
+              />
             </CardContent>
           </Card>
 
-          <Card sx={{
-            padding: "1rem",
-            boxShadow: 3,
-            bgcolor: "rgba(255, 255, 255, 0.61)#b1a096",
-          }}>
+          <Card
+            sx={{
+              padding: "1rem",
+              boxShadow: 3,
+              bgcolor: "rgba(255, 255, 255, 0.61)#b1a096",
+            }}
+          >
             <CardContent>
-              <Typography variant="h6" sx={{ color: "#983f4b", textAlign: "center", mb: 2 ,fontWeight:"bold"}}>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "#983f4b",
+                  textAlign: "center",
+                  mb: 2,
+                  fontWeight: "bold",
+                }}
+              >
                 בחירת רקע
               </Typography>
-              
+
               <Box
                 sx={{
                   display: "flex",
@@ -428,21 +542,28 @@ const LetterGenerator = () => {
                         backgroundImage: `url(${bg})`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",
-                        border: selectedBackground === bg ? "4px solid white" : "2px solid rgba(255,255,255,0.5)",
+                        border:
+                          selectedBackground === bg
+                            ? "4px solid white"
+                            : "2px solid rgba(255,255,255,0.5)",
                         cursor: "pointer",
                         borderRadius: "5px",
                         transition: "all 0.2s",
-                        "&:hover": { transform: "scale(1.05)" }
+                        "&:hover": { transform: "scale(1.05)" },
                       }}
                     />
                   ))}
                 </Box>
-                
+
                 {totalPages > 1 && (
                   <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
                     <Button
                       variant="outlined"
-                      onClick={() => setCurrentBackgroundPage(prev => Math.max(0, prev - 1))}
+                      onClick={() =>
+                        setCurrentBackgroundPage((prev) =>
+                          Math.max(0, prev - 1)
+                        )
+                      }
                       disabled={currentBackgroundPage === 0}
                       sx={{ color: "#c27d83", borderColor: "white" }}
                     >
@@ -450,7 +571,11 @@ const LetterGenerator = () => {
                     </Button>
                     <Button
                       variant="outlined"
-                      onClick={() => setCurrentBackgroundPage(prev => Math.min(totalPages - 1, prev + 1))}
+                      onClick={() =>
+                        setCurrentBackgroundPage((prev) =>
+                          Math.min(totalPages - 1, prev + 1)
+                        )
+                      }
                       disabled={currentBackgroundPage === totalPages - 1}
                       sx={{ color: "#c27d83", borderColor: "white" }}
                     >
@@ -465,50 +590,46 @@ const LetterGenerator = () => {
       </Box>
 
       <Box
-  component="footer"
-  sx={{
-    width: '100vw',
-    backgroundColor: '#c27d83',
-    boxSizing: 'border-box',
-    color: '#ffffff',
-    marginBottom: 0,
-   // mt: 8,
-    py: 4,
-    px: 2,
-    textAlign: 'center',
-  }}
->
-<Typography variant="h6" sx={{ fontWeight: 'bold' }} >
-       ELISHEVA & NECHAMI TECHNOLOGY
-      </Typography>
-
-      <Stack
-        direction="row"
-        spacing={1}
-        justifyContent="center"
-        alignItems="center"
-        sx={{ mt: 1 }}
+        component="footer"
+        sx={{
+          width: "100vw",
+          backgroundColor: "rgba(152, 63, 75, 0.7)",
+          boxSizing: "border-box",
+          color: "#ffffff",
+          marginBottom: 0,
+          py: 4,
+          px: 2,
+          textAlign: "center",
+        }}
       >
-        <EmailIcon fontSize="small" />
-        <Typography variant="body2">info@example.com</Typography>
-      </Stack>
+        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+          ELISHEVA & NECHAMI TECHNOLOGY
+        </Typography>
 
-      <Stack
-        direction="row"
-        spacing={1}
-        justifyContent="center"
-        alignItems="center"
-        sx={{ mt: 0.5 }}
-      >
-        <PhoneIcon fontSize="small" />
-        <Typography variant="body2">050-1234567</Typography>
-      </Stack>
-  </Box>
-  <LoveUsButton /> 
-</Box>
-         
-  
-    
+        <Stack
+          direction="row"
+          spacing={1}
+          justifyContent="center"
+          alignItems="center"
+          sx={{ mt: 1 }}
+        >
+          <EmailIcon fontSize="small" />
+          <Typography variant="body2">info@example.com</Typography>
+        </Stack>
+
+        <Stack
+          direction="row"
+          spacing={1}
+          justifyContent="center"
+          alignItems="center"
+          sx={{ mt: 0.5 }}
+        >
+          <PhoneIcon fontSize="small" />
+          <Typography variant="body2">050-1234567</Typography>
+        </Stack>
+      </Box>
+      <LoveUsButton />
+    </Box>
   );
 };
 
