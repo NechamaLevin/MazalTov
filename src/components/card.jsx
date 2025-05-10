@@ -219,10 +219,6 @@ const LetterGenerator = () => {
           },
         }}
       >
-        <Typography variant="body2" sx={{ mb: 1 }}>
-          גלול למטה להמשך
-        </Typography>
-        <KeyboardArrowDown />
       </Box>
 
       <Typography
@@ -607,7 +603,12 @@ const LetterGenerator = () => {
           sx={{ mt: 1 }}
         >
           <EmailIcon fontSize="small" />
-          <Typography variant="body2">info@example.com</Typography>
+          <Typography variant="body2"><Button
+  variant="text"
+  color="whiht'"
+  onClick={() => setOpenDialog(true)}
+>
+לחצו ליצירת קשר במייל</Button></Typography>
         </Stack>
 
         <Stack
@@ -618,7 +619,7 @@ const LetterGenerator = () => {
           sx={{ mt: 0.5 }}
         >
           <PhoneIcon fontSize="small" />
-          <Typography variant="body2">050-1234567</Typography>
+          <Typography variant="body2">054-850-1802 | 055-676-2801</Typography>
         </Stack>
       </Box>
   <LoveUsButton onClick={() => setOpenDialog(true)} />
