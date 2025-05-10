@@ -20,6 +20,10 @@ import createCache from "@emotion/cache";
 import { prefixer } from "stylis";
 import rtlPlugin from "stylis-plugin-rtl";
 import RichEditor from "./Email.jsx";
+import MusicNotes from "./MusicNotes";
+import Pause from "@mui/icons-material/Pause";
+import PlayArrow from "@mui/icons-material/PlayArrow";
+import IconButton from "@mui/material/IconButton";
 
 const backgrounds = [
   "333.jpg",
@@ -50,6 +54,10 @@ const LetterGenerator = () => {
     stylisPlugins: [prefixer, rtlPlugin],
     color: "#0D1E46",
   });
+  //music
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [audio] = useState(new Audio("sounds/song1.mp3")); // הקובץ שלך
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -83,7 +91,14 @@ const LetterGenerator = () => {
       clearInterval(interval);
     };
   }, []);
-
+  const toggleMusic = () => {
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
   const handleDownloadPDF = () => {
     document.fonts.ready.then(() => {
       if (!letterRef.current) return;
@@ -176,6 +191,8 @@ const LetterGenerator = () => {
         html2pdf().set(opt).from(tempDiv).save();
       });
     });
+    audio.play();
+    setIsPlaying(true);
   };
 
   return (
@@ -199,8 +216,6 @@ const LetterGenerator = () => {
           position: "fixed",
           bottom: "20px",
           left: "5%",
-          //transform: "translateX(-50%)",
-          //animation: "bounce 2s infinite",
           color: "white",
           display: "flex",
           flexDirection: "column",
@@ -218,12 +233,7 @@ const LetterGenerator = () => {
             },
           },
         }}
-      >
-        <Typography variant="body2" sx={{ mb: 1 }}>
-          גלול למטה להמשך
-        </Typography>
-        <KeyboardArrowDown />
-      </Box>
+      ></Box>
 
       <Typography
         variant="h4"
@@ -457,6 +467,50 @@ const LetterGenerator = () => {
                 <Download sx={{ fontSize: "1.5rem" }} />
                 הורד ל-PDF
               </Button>
+
+              {isPlaying && (
+                <div
+                  style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                    backdropFilter: "blur(8px)",
+                    backgroundColor: "rgba(0,0,0,0.3)",
+                    zIndex: 9999,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <IconButton
+                    onClick={toggleMusic}
+                    sx={{
+                      width: 80,
+                      height: 80,
+                      backgroundColor: "white",
+                      borderRadius: "50%",
+                      boxShadow: "0 0 20px rgba(0,0,0,0.3)",
+                      "&:hover": {
+                        backgroundColor: "#f0f0f0",
+                      },
+                    }}
+                  >
+                    {isPlaying ? (
+                      <Pause sx={{ fontSize: 50 }} />
+                    ) : (
+                      <PlayArrow sx={{ fontSize: 50 }} />
+                    )}
+                  </IconButton>
+                </div>
+              )}
+
+              {/* נגן מוסיקה מוסתר */}
+              <audio ref={audioRef} src="sounds/song1.mp3" />
+
+              {/* קומפוננטת אנימציה */}
+              <MusicNotes isPlaying={isPlaying} />
             </CardContent>
           </Card>
 
