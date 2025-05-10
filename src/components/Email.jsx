@@ -232,8 +232,7 @@ export default function RichEditor({ open, onClose }) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth dir="rtl">
       <DialogTitle sx={{ m: 0, p: 1.5, fontSize: '1rem', fontWeight: 'bold', borderBottom: '1px solid #ddd' }}>
-        טיוטה
-        <IconButton onClick={onClose} sx={{ position: 'absolute', left: 8, top: 8 }}>
+הודעה חדשה        <IconButton onClick={onClose} sx={{ position: 'absolute', left: 8, top: 8 }}>
           <CloseIcon />
         </IconButton>
       </DialogTitle>
