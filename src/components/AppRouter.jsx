@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import LetterGenerator from "./card";
-import Email from "./Email";
+import RichEditor from "./Email";
 
 
 
@@ -11,7 +11,7 @@ function AppRouter() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/main" element={<LetterGenerator/>} />
-        <Route path="/Email" element={<Email/>} />
+        <Route path="/Email" element={<RichEditor/>} />
 
       </Routes>
     </Router>

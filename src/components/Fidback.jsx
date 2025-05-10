@@ -1,7 +1,6 @@
 import { IconButton, Tooltip } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { styled, keyframes } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
 
 const bounce = keyframes`
   0%, 100% { transform: translateY(0); }
@@ -40,12 +39,10 @@ const FloatingIcon = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-export default function LoveUsFancyButton() {
-  const navigate = useNavigate();
-
+export default function LoveUsFancyButton({ onClick }) {
   return (
     <Tooltip title=":) אהבתם? ספרו לנו" placement="top">
-      <FloatingIcon onClick={() => navigate('/Email')}>
+      <FloatingIcon onClick={onClick}>
         <FavoriteIcon fontSize="medium" />
       </FloatingIcon>
     </Tooltip>
