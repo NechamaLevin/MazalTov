@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import html2pdf from "html2pdf.js";
 import TextEditorToolbar from "./textEditor.jsx";
-import { Download, KeyboardArrowDown } from "@mui/icons-material";
+import { Download } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import LoveUsButton from "./Fidback.jsx";
@@ -660,8 +660,13 @@ const LetterGenerator = () => {
           alignItems="center"
           sx={{ mt: 1 }}
         >
-          <EmailIcon fontSize="small" />
-          <Typography variant="body2">info@example.com</Typography>
+        <EmailIcon fontSize="small" />
+          <Typography variant="body2"><Button
+  variant="text"
+  color="whiht'"
+  onClick={() => setOpenDialog(true)}
+>
+לחצו ליצירת קשר במייל</Button></Typography>
         </Stack>
 
         <Stack
@@ -672,11 +677,15 @@ const LetterGenerator = () => {
           sx={{ mt: 0.5 }}
         >
           <PhoneIcon fontSize="small" />
-          <Typography variant="body2">050-1234567</Typography>
+          <Typography variant="body2">054-850-1802 | 055-676-2801</Typography>
         </Stack>
       </Box>
-      <LoveUsButton />
+<LoveUsButton onClick={() => setOpenDialog(true)} />
+
+      {/* הדיאלוג עצמו */}
+      <RichEditor open={openDialog} onClose={() => setOpenDialog(false)} />
     </Box>
+    
   );
 };
 
