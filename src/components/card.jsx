@@ -28,6 +28,7 @@ import { Tooltip } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import Close from "@mui/icons-material/Close";
+import confetti from "canvas-confetti";
 
 const backgrounds = [
   "333.jpg",
@@ -58,6 +59,20 @@ const LetterGenerator = () => {
     stylisPlugins: [prefixer, rtlPlugin],
     color: "#0D1E46",
   });
+
+  const triggerConfetti = () => {
+    const canvas = document.getElementById("confetti-canvas");
+    if (!canvas) return;
+
+    const myConfetti = confetti.create(canvas, { resize: true });
+
+    myConfetti({
+      particleCount: 150,
+      spread: 120,
+      origin: { y: 0.6 },
+    });
+  };
+
   //music
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -71,6 +86,8 @@ const LetterGenerator = () => {
 
   const [currentBackgroundPage, setCurrentBackgroundPage] = useState(0);
   const backgroundsPerPage = 6;
+  const [downloadSuccess, setDownloadSuccess] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
 
   const displayedBackgrounds = backgrounds.slice(
     currentBackgroundPage * backgroundsPerPage,
@@ -197,6 +214,14 @@ const LetterGenerator = () => {
     });
     audio.play();
     setIsPlaying(true);
+    setTimeout(() => {
+      setDownloadSuccess(true);
+      setShowMessage(true);
+      triggerConfetti();
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 2000); // משך הצגת ההודעה לפני התחלת העלמות
+    }, 2000); // עיכוב לפני הצגת ההודעה
   };
   const navigate = useNavigate();
 
@@ -239,7 +264,7 @@ const LetterGenerator = () => {
           },
         }}
       ></Box>
-      <div style={{ position: "absolute", top: 16, right: 40,zIndex: 1000 }}>
+      <div style={{ position: "absolute", top: 16, right: 40, zIndex: 1000 }}>
         <Tooltip title="חזרה לעמוד הבית" arrow>
           <IconButton
             onClick={() => navigate("/")}
@@ -553,6 +578,33 @@ const LetterGenerator = () => {
 
               {/* קומפוננטת אנימציה */}
               <MusicNotes isPlaying={isPlaying} />
+              {downloadSuccess && (
+                <div
+                  style={{
+                    position: "fixed",
+                    top: "20%",
+                    right: 0,
+                    left: 0,
+                    margin: "0 auto",
+                    width: "fit-content",
+                    backgroundColor: "#fff",
+                    padding: "16px 24px",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                    zIndex: 10001,
+                    color: "#c27d83",
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    textAlign: "center",
+                    opacity: showMessage ? 1 : 0,
+                    transition: "opacity 1.5s ease-in-out",
+                  }}
+                >
+                  הקובץ הורד בהצלחה!
+                  <br />
+                  מזל טוב!🥂
+                </div>
+              )}
             </CardContent>
           </Card>
 
