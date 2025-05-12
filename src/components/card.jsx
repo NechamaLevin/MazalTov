@@ -61,7 +61,7 @@ const LetterGenerator = () => {
   //music
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audio] = useState(new Audio("/sounds/song1.mp3")); // הקובץ שלך
+  const [audio] = useState(new Audio("/sounds/song3.mp3")); // הקובץ שלך
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -239,7 +239,7 @@ const LetterGenerator = () => {
           },
         }}
       ></Box>
-      <div style={{ position: "absolute", top: 16, right: 16, zIndex: 1000 }}>
+      <div style={{ position: "absolute", top: 16, right: 40,zIndex: 1000 }}>
         <Tooltip title="חזרה לעמוד הבית" arrow>
           <IconButton
             onClick={() => navigate("/")}
@@ -549,7 +549,7 @@ const LetterGenerator = () => {
               )}
 
               {/* נגן מוסיקה מוסתר */}
-              <audio ref={audioRef} src="/sounds/song1.mp3" />
+              <audio ref={audioRef} src="/sounds/song3.mp3" />
 
               {/* קומפוננטת אנימציה */}
               <MusicNotes isPlaying={isPlaying} />
