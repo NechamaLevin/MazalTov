@@ -38,6 +38,8 @@ export default function RichEditor({ open, onClose }) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [replyToError, setReplyToError] = useState(false);
+
 
 
   const format = (command, value = null) => {
@@ -59,7 +61,13 @@ export default function RichEditor({ open, onClose }) {
   };
 
   const handleSend = () => {
-  setIsSending(true); // התחלת שליחה
+  if (!replyTo.trim()) {
+    setReplyToError(true);
+    return;
+  }
+
+  setReplyToError(false); // אם לא ריק - אין שגיאה
+  setIsSending(true);
   const content = editorRef.current.innerHTML;
 
   const templateParams = {
@@ -86,9 +94,10 @@ export default function RichEditor({ open, onClose }) {
       setShowError(true);
     })
     .finally(() => {
-      setIsSending(false); // סיום שליחה
+      setIsSending(false);
     });
 };
+
 
   return (
     <>
@@ -117,15 +126,34 @@ export default function RichEditor({ open, onClose }) {
               InputProps={{ disableUnderline: true }}
               sx={{ px: 2, py: 1, borderBottom: '1px solid #eee' }}
             />
-            <TextField
-              placeholder="כתובת המייל שלכם (במידה ותרצו שנחזור אליכם)"
-              variant="standard"
-              fullWidth
-              value={replyTo}
-              onChange={(e) => setReplyTo(e.target.value)}
-              InputProps={{ disableUnderline: true }}
-              sx={{ px: 2, py: 1, borderBottom: '1px solid #eee' }}
-            />
+       <TextField
+  placeholder="כתובת המייל שלכם (במידה ותרצו שנחזור אליכם)"
+  variant="standard"
+  fullWidth
+  value={replyTo}
+  onChange={(e) => setReplyTo(e.target.value)}
+  error={replyToError}
+  helperText={replyToError ? 'כתובת מייל היא שדה חובה' : ''}
+  FormHelperTextProps={{
+    sx: {
+      color: '#d32f2f',
+      fontWeight: 'bold',
+      textAlign: 'right',
+      direction: 'rtl',
+      fontSize: '0.9rem',
+      mt: 0.5
+    }
+  }}
+  InputProps={{ disableUnderline: true }}
+  sx={{
+    px: 2,
+    py: 1,
+    borderBottom: '1px solid #eee',
+    direction: 'rtl',
+    textAlign: 'right'
+  }}
+/>
+
 
             <div
               ref={editorRef}
