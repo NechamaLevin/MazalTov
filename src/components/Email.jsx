@@ -241,8 +241,7 @@ export default function RichEditor({ open, onClose }) {
       border: '1px solid #a8dab5'
     }}
   >
- ההודעה נשלחה בהצלחה
-  </Alert>
+ההודעה נשלחה בהצלחה תודה רבה ובשמחות  </Alert>
 </Snackbar>
 
 
