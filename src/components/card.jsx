@@ -42,7 +42,7 @@ const backgrounds = [
 
 const LetterGenerator = () => {
   const [textStyle, setTextStyle] = useState({
-    textAlign: "right",
+    textAlign: "justify",
     color: "#000000",
     fontFamily: "Rubik",
   });
@@ -57,7 +57,7 @@ const LetterGenerator = () => {
   //music
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audio] = useState(new Audio("/sounds/song3.mp3")); // הקובץ שלך
+  const [audio] = useState(new Audio("/sounds/song1.mp3")); // הקובץ שלך
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -507,7 +507,7 @@ const LetterGenerator = () => {
               )}
 
               {/* נגן מוסיקה מוסתר */}
-              <audio ref={audioRef} src="/sounds/song3.mp3" />
+              <audio ref={audioRef} src="/sounds/song1.mp3" />
 
               {/* קומפוננטת אנימציה */}
               <MusicNotes isPlaying={isPlaying} />

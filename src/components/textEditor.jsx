@@ -12,7 +12,7 @@ import "@fontsource/secular-one";
 import "@fontsource/miriam-libre";
 import "@fontsource/ibm-plex-sans-hebrew";
 const TextEditorToolbar = ({ onStyleChange, currentStyle }) => {
-  const [alignment, setAlignment] = useState("right");
+  const [alignment, setAlignment] = useState("justify");
   const [fontColor, setFontColor] = useState("#000000");
   const [selectedFont, setSelectedFont] = useState("Rubik");
   const fonts = ["Arial", "David", "Narkisim", "Rubik", "Assistant", "Varela Round", "Assistant",
