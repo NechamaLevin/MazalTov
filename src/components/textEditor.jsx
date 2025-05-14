@@ -14,14 +14,21 @@ const TextEditorToolbar = ({ onStyleChange, currentStyle }) => {
   const [alignment, setAlignment] = useState("justify");
   const [fontColor, setFontColor] = useState("#000000");
   const [selectedFont, setSelectedFont] = useState("Rubik");
-  const fonts = ["Arial", "David", "Narkisim", "Rubik", "Assistant", "Assistant",
-    "Rubik",
-    "Alef",
-    "David Libre",
-    "Frank Ruhl Libre",
-    "Secular One",
-    "Miriam Libre",
-    "IBM Plex Sans Hebrew"];
+const fonts = [
+  { label: "נקי", value: "Arial" },
+  { label: "קלאסי", value: "David" },
+  { label: "אלגנטי", value: "Narkisim" },
+  { label: "מודרני", value: "Rubik" },
+  { label: "רגוע", value: "Assistant" },
+  { label: "מאופק", value: "Alef" },
+  { label: "מסורתי", value: "David Libre" },
+  { label: "רשמי", value: "Frank Ruhl Libre" },
+  { label: "נועז", value: "Secular One" },
+  { label: "חמים", value: "Miriam Libre" },
+  { label: "טכנולוגי", value: "IBM Plex Sans Hebrew" },
+];
+
+
 
   // שינוי יישור
   const handleAlignment = (event, newAlignment) => {
@@ -74,9 +81,9 @@ const TextEditorToolbar = ({ onStyleChange, currentStyle }) => {
         fullWidth
         sx={{ backgroundColor: "#c27d83", color: "white", border: "2px solid white", mt: 2 }}
       >
-        {fonts.map((font) => (
-          <MenuItem key={font} value={font} style={{ fontFamily: font }}>
-            {font}
+{fonts.map((font) => (
+  <MenuItem key={font.value} value={font.value} style={{ fontFamily: font.value }}>
+    {font.label}
           </MenuItem>
         ))}
       </Select>

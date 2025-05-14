@@ -35,7 +35,6 @@ const backgrounds = [
   "444.jpg",
   "555.jpg",
   "666.jpg",
-  "111.png",
   "222.jpg",
   "777.jpg.jpg",
   "4444.jpg",
