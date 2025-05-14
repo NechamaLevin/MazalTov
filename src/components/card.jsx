@@ -29,6 +29,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import Close from "@mui/icons-material/Close";
 import confetti from "canvas-confetti";
+import DownloadCounterWidget from "./DownloadCounterWidget.jsx";
 
 const backgrounds = [
   "333.jpg",
@@ -120,97 +121,103 @@ const LetterGenerator = () => {
     setIsPlaying(!isPlaying);
   };
   const handleDownloadPDF = () => {
-    document.fonts.ready.then(() => {
-      if (!letterRef.current) return;
+const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiPwcmmwfddjQt5o3yeFw3951Ns4cnAMnAr1DnFm3Oo4hgw/exec"
 
-      const lightenImage = (imgSrc, callback) => {
-        const img = new Image();
-        img.crossOrigin = "Anonymous"; // חשוב כדי למנוע בעיות של CORS
-        img.src = imgSrc;
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          canvas.width = img.width;
-          canvas.height = img.height;
+  // קודם נעדכן את המונה
+  fetch(API_URL, {
+    method: "POST",
+    body: new URLSearchParams({ fileName: "card" }),
+  })
+    .then(() => {
+      // רק אחרי שהמונה עודכן - נמשיך ליצור את ה-PDF
+      document.fonts.ready.then(() => {
+        if (!letterRef.current) return;
 
-          // ציור התמונה המקורית
-          ctx.drawImage(img, 0, 0);
-
-          // הוספת שכבת שקיפות לבנה כדי להבהיר
-          ctx.globalAlpha = 0.5; // שליטה בעוצמת ההבהרה
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-          // קריאה חזרה עם התמונה החדשה
-          callback(canvas.toDataURL("image/jpeg"));
-        };
-      };
-
-      // משתמשים בפונקציה רק פעם אחת, לאחר שהתמונה הובהרה
-      lightenImage(selectedBackground, (lightImage) => {
-        const tempDiv = document.createElement("div");
-        tempDiv.style.width = "297mm";
-        tempDiv.style.height = "210mm";
-        tempDiv.style.display = "flex";
-        tempDiv.style.flexDirection = "row";
-        tempDiv.style.justifyContent = "space-between";
-        tempDiv.style.alignItems = "flex-start";
-        tempDiv.style.margin = "0";
-        tempDiv.style.padding = "0";
-
-        for (let i = 0; i < 4; i++) {
-          const column = document.createElement("div");
-          column.style.width = "25%";
-          column.style.height = "100%";
-          column.style.border = "2px solid black";
-          column.style.boxSizing = "border-box";
-          column.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
-          column.style.display = "flex";
-          column.style.flexDirection = "column";
-          column.style.justifyContent = "center";
-          column.style.alignItems = "center";
-          column.style.textAlign = "justify";
-          column.style.direction = "rtl";
-          column.style.margin = "0";
-          column.style.padding = "3mm";
-          column.style.fontSize = "8px";
-          column.style.backgroundImage = `url(${lightImage})`; // שימוש בתמונה הבהירה
-          column.style.backgroundSize = "cover";
-          column.style.backgroundPosition = "center";
-          column.style.backgroundRepeat = "no-repeat";
-
-          const clonedContent = document.createElement("div");
-          clonedContent.innerHTML = letterRef.current.innerHTML;
-          clonedContent.style.overflowWrap = "break-word";
-          clonedContent.style.lineHeight = "1.2";
-          clonedContent.style.letterSpacing = "0.5px";
-          clonedContent.style.wordBreak = "break-word";
-          clonedContent.style.textAlign = "justify";
-          clonedContent.style.fontSize = "9px";
-          clonedContent.style.maxWidth = "100%";
-
-          column.appendChild(clonedContent);
-          tempDiv.appendChild(column);
-        }
-
-        const opt = {
-          margin: 0,
-          filename: "תפילה_לחופה.pdf",
-          image: { type: "jpeg", quality: 1.0 },
-          html2canvas: {
-            scale: 3,
-            dpi: 300,
-            letterRendering: true,
-            backgroundColor: null,
-            useCORS: true,
-          },
-          jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+        const lightenImage = (imgSrc, callback) => {
+          const img = new Image();
+          img.crossOrigin = "Anonymous";
+          img.src = imgSrc;
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            ctx.globalAlpha = 0.5;
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            callback(canvas.toDataURL("image/jpeg"));
+          };
         };
 
-        // קריאה ליצירת PDF רק לאחר שהמבנה מוכן
-        html2pdf().set(opt).from(tempDiv).save();
+        lightenImage(selectedBackground, (lightImage) => {
+          const tempDiv = document.createElement("div");
+          tempDiv.style.width = "297mm";
+          tempDiv.style.height = "210mm";
+          tempDiv.style.display = "flex";
+          tempDiv.style.flexDirection = "row";
+          tempDiv.style.justifyContent = "space-between";
+          tempDiv.style.alignItems = "flex-start";
+          tempDiv.style.margin = "0";
+          tempDiv.style.padding = "0";
+
+          for (let i = 0; i < 4; i++) {
+            const column = document.createElement("div");
+            column.style.width = "25%";
+            column.style.height = "100%";
+            column.style.border = "2px solid black";
+            column.style.boxSizing = "border-box";
+            column.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
+            column.style.display = "flex";
+            column.style.flexDirection = "column";
+            column.style.justifyContent = "center";
+            column.style.alignItems = "center";
+            column.style.textAlign = "justify";
+            column.style.direction = "rtl";
+            column.style.margin = "0";
+            column.style.padding = "3mm";
+            column.style.fontSize = "8px";
+            column.style.backgroundImage = `url(${lightImage})`;
+            column.style.backgroundSize = "cover";
+            column.style.backgroundPosition = "center";
+            column.style.backgroundRepeat = "no-repeat";
+
+            const clonedContent = document.createElement("div");
+            clonedContent.innerHTML = letterRef.current.innerHTML;
+            clonedContent.style.overflowWrap = "break-word";
+            clonedContent.style.lineHeight = "1.2";
+            clonedContent.style.letterSpacing = "0.5px";
+            clonedContent.style.wordBreak = "break-word";
+            clonedContent.style.textAlign = "justify";
+            clonedContent.style.fontSize = "9px";
+            clonedContent.style.maxWidth = "100%";
+
+            column.appendChild(clonedContent);
+            tempDiv.appendChild(column);
+          }
+
+          const opt = {
+            margin: 0,
+            filename: "תפילה_לחופה.pdf",
+            image: { type: "jpeg", quality: 1.0 },
+            html2canvas: {
+              scale: 3,
+              dpi: 300,
+              letterRendering: true,
+              backgroundColor: null,
+              useCORS: true,
+            },
+            jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+          };
+
+          html2pdf().set(opt).from(tempDiv).save();
+        });
       });
+    })
+    .catch((err) => {
+      console.error("שגיאה בעדכון המונה:", err);
     });
+
     audio.play();
     setIsPlaying(true);
     setTimeout(() => {
@@ -742,9 +749,13 @@ const LetterGenerator = () => {
           textAlign: "center",
         }}
       >
+              <DownloadCounterWidget />
+
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
           ELISHEVA & NECHAMI TECHNOLOGY
         </Typography>
+                      <DownloadCounterWidget />
+
 
         <Stack
           direction="row"
@@ -762,6 +773,8 @@ const LetterGenerator = () => {
             >
               לחצו ליצירת קשר במייל
             </Button>
+                                  <DownloadCounterWidget />
+
           </Typography>
         </Stack>
 
