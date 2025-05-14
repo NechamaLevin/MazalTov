@@ -210,7 +210,9 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
             jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
           };
 
-          html2pdf().set(opt).from(tempDiv).save();
+         html2pdf().set(opt).from(tempDiv).save().then(() => {
+  window.dispatchEvent(new Event("downloadCompleted"));
+});
         });
       });
     })
@@ -749,12 +751,10 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
           textAlign: "center",
         }}
       >
-              <DownloadCounterWidget />
 
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
           ELISHEVA & NECHAMI TECHNOLOGY
         </Typography>
-                      <DownloadCounterWidget />
 
 
         <Stack
