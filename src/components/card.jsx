@@ -412,6 +412,7 @@ const LetterGenerator = () => {
                 <ThemeProvider theme={theme}>
                   <div dir="rtl">
                     <TextField
+                    translate="no"
                       label="שם החתן"
                       variant="outlined"
                       value={firstName}
@@ -448,6 +449,7 @@ const LetterGenerator = () => {
                 <ThemeProvider theme={theme}>
                   <div dir="rtl">
                     <TextField
+                    translate="no"
                       label="שם הכלה"
                       variant="outlined"
                       value={lastName}
