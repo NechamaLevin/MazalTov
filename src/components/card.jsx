@@ -30,7 +30,6 @@ import { useNavigate } from "react-router-dom";
 import Close from "@mui/icons-material/Close";
 import confetti from "canvas-confetti";
 import DownloadCounterWidget from "./DownloadCounterWidget.jsx";
-import { fontStyle } from "@mui/system";
 
 const backgrounds = [
   "333.jpg",
@@ -338,7 +337,6 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
           <CardContent>
             <div
               style={{
-                textAlign: "center",
                 marginBottom: "2rem",
                 ...textStyle,
                 textAlign: "center",
