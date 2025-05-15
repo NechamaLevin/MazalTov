@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import Close from "@mui/icons-material/Close";
 import confetti from "canvas-confetti";
 import DownloadCounterWidget from "./DownloadCounterWidget.jsx";
+import { fontStyle } from "@mui/system";
 
 const backgrounds = [
   "333.jpg",
@@ -43,6 +44,11 @@ const backgrounds = [
   "6666.jpg",
   "7777.jpg",
   "3333.jpg",
+  "2.jpg",
+  "3.jpg",
+  "4.jpg",
+  "5.jpg",
+  
 ];
 
 const LetterGenerator = () => {
@@ -334,7 +340,8 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
               style={{
                 textAlign: "center",
                 marginBottom: "2rem",
-                fontFamily: "David Libre",
+                ...textStyle,
+                textAlign: "center",
                 fontSize: "24px",
                 color: "#2c3e50",
                 textShadow: "2px 2px 4px rgba(0,0,0,0.1)",
