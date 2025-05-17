@@ -127,7 +127,7 @@ export default function RichEditor({ open, onClose }) {
               sx={{ px: 2, py: 1, borderBottom: '1px solid #eee' }}
             />
        <TextField
-  placeholder="כתובת המייל שלכם (במידה ותרצו שנחזור אליכם)"
+  placeholder="כתובת המייל שלכם"
   variant="standard"
   fullWidth
   value={replyTo}
