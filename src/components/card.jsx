@@ -30,7 +30,7 @@ import { useNavigate } from "react-router-dom";
 import Close from "@mui/icons-material/Close";
 import confetti from "canvas-confetti";
 import DownloadCounterWidget from "./DownloadCounterWidget.jsx";
-import { fontStyle } from "@mui/system";
+import AddIcon from "@mui/icons-material/Add";
 
 const backgrounds = [
   "333.jpg",
@@ -44,11 +44,9 @@ const backgrounds = [
   "6666.jpg",
   "7777.jpg",
   "3333.jpg",
-  "2.jpg",
   "3.jpg",
   "4.jpg",
   "5.jpg",
-  
 ];
 
 const LetterGenerator = () => {
@@ -88,19 +86,36 @@ const LetterGenerator = () => {
   const [lastName, setLastName] = useState("");
   const [selectedBackground, setSelectedBackground] = useState("3333.jpg");
   const [openDialog, setOpenDialog] = useState(false);
-  const letterRef = useRef(null);
 
   const [currentBackgroundPage, setCurrentBackgroundPage] = useState(0);
-  const backgroundsPerPage = 6;
   const [downloadSuccess, setDownloadSuccess] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+  const fileInputRef = useRef(null);
 
-  const displayedBackgrounds = backgrounds.slice(
-    currentBackgroundPage * backgroundsPerPage,
-    (currentBackgroundPage + 1) * backgroundsPerPage
-  );
+  const letterRef = useRef();
 
-  const totalPages = Math.ceil(backgrounds.length / backgroundsPerPage);
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSelectedBackground(reader.result); // שומר את תמונת הרקע
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const displayedBackgrounds = (() => {
+    if (currentBackgroundPage === 0) {
+      return backgrounds.slice(0, 5);
+    } else {
+      const start = 5 + (currentBackgroundPage - 1) * 6;
+      const end = start + 6;
+      return backgrounds.slice(start, end);
+    }
+  })();
+
+  const totalPages = Math.ceil((backgrounds.length - 5) / 6) + 1;
 
   const [isPulsing, setIsPulsing] = useState(false);
 
@@ -127,104 +142,109 @@ const LetterGenerator = () => {
     setIsPlaying(!isPlaying);
   };
   const handleDownloadPDF = () => {
-const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiPwcmmwfddjQt5o3yeFw3951Ns4cnAMnAr1DnFm3Oo4hgw/exec"
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiPwcmmwfddjQt5o3yeFw3951Ns4cnAMnAr1DnFm3Oo4hgw/exec";
 
-  // קודם נעדכן את המונה
-  fetch(API_URL, {
-    method: "POST",
-    body: new URLSearchParams({ fileName: "card" }),
-  })
-    .then(() => {
-      // רק אחרי שהמונה עודכן - נמשיך ליצור את ה-PDF
-      document.fonts.ready.then(() => {
-        if (!letterRef.current) return;
-
-        const lightenImage = (imgSrc, callback) => {
-          const img = new Image();
-          img.crossOrigin = "Anonymous";
-          img.src = imgSrc;
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-            ctx.globalAlpha = 0.5;
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            callback(canvas.toDataURL("image/jpeg"));
-          };
-        };
-
-        lightenImage(selectedBackground, (lightImage) => {
-          const tempDiv = document.createElement("div");
-          tempDiv.style.width = "297mm";
-          tempDiv.style.height = "210mm";
-          tempDiv.style.display = "flex";
-          tempDiv.style.flexDirection = "row";
-          tempDiv.style.justifyContent = "space-between";
-          tempDiv.style.alignItems = "flex-start";
-          tempDiv.style.margin = "0";
-          tempDiv.style.padding = "0";
-
-          for (let i = 0; i < 4; i++) {
-            const column = document.createElement("div");
-            column.style.width = "25%";
-            column.style.height = "100%";
-            column.style.border = "2px solid black";
-            column.style.boxSizing = "border-box";
-            column.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
-            column.style.display = "flex";
-            column.style.flexDirection = "column";
-            column.style.justifyContent = "center";
-            column.style.alignItems = "center";
-            column.style.textAlign = "justify";
-            column.style.direction = "rtl";
-            column.style.margin = "0";
-            column.style.padding = "3mm";
-            column.style.fontSize = "8px";
-            column.style.backgroundImage = `url(${lightImage})`;
-            column.style.backgroundSize = "cover";
-            column.style.backgroundPosition = "center";
-            column.style.backgroundRepeat = "no-repeat";
-
-            const clonedContent = document.createElement("div");
-            clonedContent.innerHTML = letterRef.current.innerHTML;
-            clonedContent.style.overflowWrap = "break-word";
-            clonedContent.style.lineHeight = "1.2";
-            clonedContent.style.letterSpacing = "0.5px";
-            clonedContent.style.wordBreak = "break-word";
-            clonedContent.style.textAlign = "justify";
-            clonedContent.style.fontSize = "9px";
-            clonedContent.style.maxWidth = "100%";
-
-            column.appendChild(clonedContent);
-            tempDiv.appendChild(column);
-          }
-
-          const opt = {
-            margin: 0,
-            filename: "תפילה_לחופה.pdf",
-            image: { type: "jpeg", quality: 1.0 },
-            html2canvas: {
-              scale: 3,
-              dpi: 300,
-              letterRendering: true,
-              backgroundColor: null,
-              useCORS: true,
-            },
-            jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
-          };
-
-         html2pdf().set(opt).from(tempDiv).save().then(() => {
-  window.dispatchEvent(new Event("downloadCompleted"));
-});
-        });
-      });
+    // קודם נעדכן את המונה
+    fetch(API_URL, {
+      method: "POST",
+      body: new URLSearchParams({ fileName: "card" }),
     })
-    .catch((err) => {
-      console.error("שגיאה בעדכון המונה:", err);
-    });
+      .then(() => {
+        // רק אחרי שהמונה עודכן - נמשיך ליצור את ה-PDF
+        document.fonts.ready.then(() => {
+          if (!letterRef.current) return;
+
+          const lightenImage = (imgSrc, callback) => {
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.src = imgSrc;
+            img.onload = () => {
+              const canvas = document.createElement("canvas");
+              const ctx = canvas.getContext("2d");
+              canvas.width = img.width;
+              canvas.height = img.height;
+              ctx.drawImage(img, 0, 0);
+              ctx.globalAlpha = 0.5;
+              ctx.fillStyle = "#ffffff";
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              callback(canvas.toDataURL("image/jpeg"));
+            };
+          };
+
+          lightenImage(selectedBackground, (lightImage) => {
+            const tempDiv = document.createElement("div");
+            tempDiv.style.width = "297mm";
+            tempDiv.style.height = "210mm";
+            tempDiv.style.display = "flex";
+            tempDiv.style.flexDirection = "row";
+            tempDiv.style.justifyContent = "space-between";
+            tempDiv.style.alignItems = "flex-start";
+            tempDiv.style.margin = "0";
+            tempDiv.style.padding = "0";
+
+            for (let i = 0; i < 4; i++) {
+              const column = document.createElement("div");
+              column.style.width = "25%";
+              column.style.height = "100%";
+              column.style.border = "2px solid black";
+              column.style.boxSizing = "border-box";
+              column.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
+              column.style.display = "flex";
+              column.style.flexDirection = "column";
+              column.style.justifyContent = "center";
+              column.style.alignItems = "center";
+              column.style.textAlign = "justify";
+              column.style.direction = "rtl";
+              column.style.margin = "0";
+              column.style.padding = "3mm";
+              column.style.fontSize = "8px";
+              column.style.backgroundImage = `url(${lightImage})`;
+              column.style.backgroundSize = "cover";
+              column.style.backgroundPosition = "center";
+              column.style.backgroundRepeat = "no-repeat";
+
+              const clonedContent = document.createElement("div");
+              clonedContent.innerHTML = letterRef.current.innerHTML;
+              clonedContent.style.overflowWrap = "break-word";
+              clonedContent.style.lineHeight = "1.2";
+              clonedContent.style.letterSpacing = "0.5px";
+              clonedContent.style.wordBreak = "break-word";
+              clonedContent.style.textAlign = "justify";
+              clonedContent.style.fontSize = "9px";
+              clonedContent.style.maxWidth = "100%";
+
+              column.appendChild(clonedContent);
+              tempDiv.appendChild(column);
+            }
+
+            const opt = {
+              margin: 0,
+              filename: "תפילה_לחופה.pdf",
+              image: { type: "jpeg", quality: 1.0 },
+              html2canvas: {
+                scale: 3,
+                dpi: 300,
+                letterRendering: true,
+                backgroundColor: null,
+                useCORS: true,
+              },
+              jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+            };
+
+            html2pdf()
+              .set(opt)
+              .from(tempDiv)
+              .save()
+              .then(() => {
+                window.dispatchEvent(new Event("downloadCompleted"));
+              });
+          });
+        });
+      })
+      .catch((err) => {
+        console.error("שגיאה בעדכון המונה:", err);
+      });
 
     audio.play();
     setIsPlaying(true);
@@ -245,7 +265,6 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
         backgroundImage: "url('/reka15.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        //bgcolor: "#b1a096",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -338,7 +357,6 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
           <CardContent>
             <div
               style={{
-                textAlign: "center",
                 marginBottom: "2rem",
                 ...textStyle,
                 textAlign: "center",
@@ -354,6 +372,7 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
             >
               תפילה לחופה
             </div>
+
             <p
               style={{
                 ...textStyle,
@@ -427,7 +446,7 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
                 <ThemeProvider theme={theme}>
                   <div dir="rtl">
                     <TextField
-                    translate="no"
+                      translate="no"
                       label="שם החתן"
                       variant="outlined"
                       value={firstName}
@@ -464,7 +483,7 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
                 <ThemeProvider theme={theme}>
                   <div dir="rtl">
                     <TextField
-                    translate="no"
+                      translate="no"
                       label="שם הכלה"
                       variant="outlined"
                       value={lastName}
@@ -653,6 +672,7 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
               />
             </CardContent>
           </Card>
+          {/* בחירת רקע */}
 
           <Card
             sx={{
@@ -690,10 +710,46 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
                     gap: "10px",
                   }}
                 >
+                  {currentBackgroundPage === 0 && (
+                    <Box
+                      key="custom"
+                      onClick={() => fileInputRef.current.click()}
+                      sx={{
+                        width: "100px",
+                        height: "120px",
+                        border: "2px dashed #ccc",
+                        borderRadius: "5px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        backgroundColor: "transparent",
+                        color: "#666",
+                        transition: "all 0.3s",
+                        "&:hover": {
+                          borderColor: "#c27d83",
+                          color: "#c27d83",
+                        },
+                      }}
+                    >
+                      <AddIcon sx={{ fontSize: 30 }} />
+                      <Typography variant="body2">מותאם אישית</Typography>
+                    </Box>
+                  )}
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+
+                  {/* רקעים רגילים */}
                   {displayedBackgrounds.map((bg) => (
                     <Box
                       key={bg}
-                      onClick={() => setSelectedBackground(bg)}
+                      onClick={() => setSelectedBackground(bg)} // ✅ בחירת רקע בלבד
                       sx={{
                         width: "100px",
                         height: "120px",
@@ -760,11 +816,9 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
           textAlign: "center",
         }}
       >
-
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
           ELISHEVA & NECHAMI TECHNOLOGY
         </Typography>
-
 
         <Stack
           direction="row"
@@ -782,8 +836,7 @@ const API_URL="https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiP
             >
               לחצו ליצירת קשר במייל
             </Button>
-                                  <DownloadCounterWidget />
-
+            <DownloadCounterWidget />
           </Typography>
         </Stack>
 
