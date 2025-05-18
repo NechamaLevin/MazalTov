@@ -85,7 +85,7 @@ const LetterGenerator = () => {
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [selectedBackground, setSelectedBackground] = useState("3333.jpg");
+const [selectedBackground, setSelectedBackground] = useState(backgrounds[0]);
   const [openDialog, setOpenDialog] = useState(false);
 
   const [currentBackgroundPage, setCurrentBackgroundPage] = useState(0);
