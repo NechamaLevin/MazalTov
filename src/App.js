@@ -1,5 +1,6 @@
 import "./App.css";
 import AppRouter from "./components/AppRouter";
+import SupportPopup from "./components/SupportPopup";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
           zIndex: 10000, // מעל הכל
         }}
       ></canvas>
+            <SupportPopup />
+
          <AppRouter></AppRouter>
          {/* <EmailEditor></EmailEditor> */}
            </header>
