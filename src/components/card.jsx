@@ -33,8 +33,8 @@ import DownloadCounterWidget from "./DownloadCounterWidget.jsx";
 import AddIcon from "@mui/icons-material/Add";
 
 const backgrounds = [
-  "111.jpg", "222.jpg", "333.jpg",
-  "111.jpg", "222.jpg", "333.jpg",
+  "111.jpg", "222.jpg", "333.jpg",  "444.jpg", "555.jpg", "666.jpg",  "777.jpg"
+
 ];
 
 const LetterGenerator = () => {
