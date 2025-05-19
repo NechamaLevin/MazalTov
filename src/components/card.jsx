@@ -33,21 +33,8 @@ import DownloadCounterWidget from "./DownloadCounterWidget.jsx";
 import AddIcon from "@mui/icons-material/Add";
 
 const backgrounds = [
-  "https://images.unsplash.com/photo-1744768326067-8b9835957c86?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D",
-  "https://plus.unsplash.com/premium_photo-1722045617896-a218219fc32e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDI4fHx8ZW58MHx8fHx8",
-  "https://s.widget-club.com/images/YyiR86zpwIMIfrCZoSs4ulVD9RF3/37a6dc3e10e8076142236a4acd419222/c01a73cb37cee1f9d3138ee1bc4a446a.jpg?q=70&w=500",
-  "https://cdn.stocksnap.io/img-thumbs/280h/01QIBCN4IG.jpg",
-  "https://cdn.stocksnap.io/img-thumbs/280h/6SX4IUKIKT.jpg",
-  "https://media.istockphoto.com/id/1338459832/photo/shadow-of-tropical-palm-leaves-on-pastel-pink-background-minimal-nature-summer-concept.webp?b=1&s=612x612&w=0&k=20&c=JqfDzvDRLlTDV1BDPILwfdAC5M3hS1eDgw3f4cxzPrM=",
-  "https://cdn.stocksnap.io/img-thumbs/960w/abstract-flower_YLDIYCGUF7.jpg",
-  "https://s.widget-club.com/images/YyiR86zpwIMIfrCZoSs4ulVD9RF3/2b3f1f150e7df8021e2f014fb53c7063/c80bf23d183070e831798d58a1b71f58.jpg?q=70&w=500",
-  "https://cdn.stocksnap.io/img-thumbs/960w/white-shapes_HOGKNEMAUX.jpg",
-  "https://cdn.stocksnap.io/img-thumbs/280h/wall-texture_0OEXXTDBJU.jpg",
-  "https://s.widget-club.com/images/YyiR86zpwIMIfrCZoSs4ulVD9RF3/00922b37d01b365ad0e9efb04e53da67/2aae7c43baf40d315307f4b2f976ed0d.jpg?q=70&w=500",
-  "https://cdn.stocksnap.io/img-thumbs/280h/white-snowy_EAUVBAQCHD.jpg",
-  "https://cdn.stocksnap.io/img-thumbs/280h/75Y0AJVGAV.jpg",
-  
-  "https://s.widget-club.com/images/YyiR86zpwIMIfrCZoSs4ulVD9RF3/de50f692e78146934d2ba410e06a1f91/fad2046c5e1e20a191dc42282c06bca6.jpg?q=70&w=500"
+  "111.jpg", "222.jpg", "333.jpg",
+  "111.jpg", "222.jpg", "333.jpg",
 ];
 
 const LetterGenerator = () => {
@@ -85,12 +72,14 @@ const LetterGenerator = () => {
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-const [selectedBackground, setSelectedBackground] = useState(backgrounds[0]);
+  const [selectedBackground, setSelectedBackground] = useState("333.jpg");
   const [openDialog, setOpenDialog] = useState(false);
 
   const [currentBackgroundPage, setCurrentBackgroundPage] = useState(0);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+
   const fileInputRef = useRef(null);
 
   const letterRef = useRef();
@@ -145,6 +134,10 @@ const [selectedBackground, setSelectedBackground] = useState(backgrounds[0]);
   const handleDownloadPDF = () => {
     const API_URL =
       "https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiPwcmmwfddjQt5o3yeFw3951Ns4cnAMnAr1DnFm3Oo4hgw/exec";
+  setIsGenerating(true); // מציג הודעת המתנה
+  setDownloadSuccess(false); // מאפס את הודעת ההצלחה הקודמת
+  audio.play();
+  setIsPlaying(true);
 
     // קודם נעדכן את המונה
     fetch(API_URL, {
@@ -238,7 +231,16 @@ const [selectedBackground, setSelectedBackground] = useState(backgrounds[0]);
               .from(tempDiv)
               .save()
               .then(() => {
+                  setIsGenerating(false); // כאן להוסיף
                 window.dispatchEvent(new Event("downloadCompleted"));
+                setTimeout(() => {
+      setDownloadSuccess(true);
+      setShowMessage(true);
+      triggerConfetti();
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 1000); // משך הצגת ההודעה לפני התחלת העלמות
+    }, 1000); // עיכוב לפני הצגת ההודעה
               });
           });
         });
@@ -249,14 +251,7 @@ const [selectedBackground, setSelectedBackground] = useState(backgrounds[0]);
 
     audio.play();
     setIsPlaying(true);
-    setTimeout(() => {
-      setDownloadSuccess(true);
-      setShowMessage(true);
-      triggerConfetti();
-      setTimeout(() => {
-        setShowMessage(false);
-      }, 2000); // משך הצגת ההודעה לפני התחלת העלמות
-    }, 2000); // עיכוב לפני הצגת ההודעה
+    
   };
   const navigate = useNavigate();
 
@@ -615,6 +610,30 @@ const [selectedBackground, setSelectedBackground] = useState(backgrounds[0]);
 
               {/* קומפוננטת אנימציה */}
               <MusicNotes isPlaying={isPlaying} />
+              {isGenerating && (
+  <div
+    style={{
+      position: "fixed",
+      top: "20%",
+      right: 0,
+      left: 0,
+      margin: "0 auto",
+      width: "fit-content",
+      backgroundColor: "#fff",
+      padding: "16px 24px",
+      borderRadius: "8px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+      zIndex: 10001,
+      color: "#c27d83",
+      fontWeight: "bold",
+      fontSize: "1.2rem",
+      textAlign: "center",
+    }}
+  >
+    ממתין ליצירת קובץ להדפסה
+  </div>
+)}
+
               {downloadSuccess && (
                 <div
                   style={{
