@@ -113,7 +113,7 @@ export default function RichEditor({ open, onClose }) {
           <Box display="flex" flexDirection="column">
             <Box px={2} py={1}>
               <div style={{ fontSize: '1rem', fontWeight: 'bold', color: '#333' }}>
-                דעתכם חשובה לנו! כל הערה או הארה תתקבל בברכה ❣️
+             נשמח לקבל משוב 
               </div>
             </Box>
 
