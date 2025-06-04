@@ -33,7 +33,7 @@ import DownloadCounterWidget from "./DownloadCounterWidget.jsx";
 import AddIcon from "@mui/icons-material/Add";
 
 const backgrounds = [
-  "111.jpg", "222.jpg", "333.jpg",  "444.jpg", "555.jpg", "666.jpg",  "777.jpg","888.jpg", "999.jpg",  "101010.jpg"
+  "131313.png","141414.png","151515.png","222.jpg", "444.jpg", "333.jpg",  "111.jpg", "555.jpg", "666.jpg",  "777.jpg","888.jpg", "999.jpg",  "101010.jpg"
 
 ];
 
@@ -72,7 +72,7 @@ const LetterGenerator = () => {
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [selectedBackground, setSelectedBackground] = useState("333.jpg");
+  const [selectedBackground, setSelectedBackground] = useState("222.jpg");
   const [openDialog, setOpenDialog] = useState(false);
 
   const [currentBackgroundPage, setCurrentBackgroundPage] = useState(0);
