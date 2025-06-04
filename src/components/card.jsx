@@ -84,6 +84,7 @@ const LetterGenerator = () => {
 
   const letterRef = useRef();
 
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
