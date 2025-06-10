@@ -132,6 +132,26 @@ const LetterGenerator = () => {
     }
     setIsPlaying(!isPlaying);
   };
+  const saveNamesToSheet = (groomName, brideName) => {
+  const NAMES_API_URL = "https://script.google.com/macros/s/AKfycbwDR6SajZ4Aa3Jmomr3lEKBzvFw6FljWQPbUCjXAZBvDhHvt6wzm6EAPqIGCpJMxcs/exec";
+
+  fetch(NAMES_API_URL, {
+    method: "POST",
+    body: new URLSearchParams({
+      groom: groomName,
+      bride: brideName,
+      time: new Date().toISOString(),
+    }),
+  })
+    .then((res) => res.text())
+    .then((responseText) => {
+      console.log("Names saved:", responseText);
+    })
+    .catch((error) => {
+      console.error("Error saving names:", error);
+    });
+};
+
   const handleDownloadPDF = () => {
     const API_URL =
       "https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiPwcmmwfddjQt5o3yeFw3951Ns4cnAMnAr1DnFm3Oo4hgw/exec";
@@ -164,6 +184,7 @@ const LetterGenerator = () => {
               ctx.fillStyle = "#ffffff";
               ctx.fillRect(0, 0, canvas.width, canvas.height);
               callback(canvas.toDataURL("image/jpeg"));
+              saveNamesToSheet(firstName, lastName);
             };
           };
 
