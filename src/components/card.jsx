@@ -31,9 +31,11 @@ import Close from "@mui/icons-material/Close";
 import confetti from "canvas-confetti";
 import DownloadCounterWidget from "./DownloadCounterWidget.jsx";
 import AddIcon from "@mui/icons-material/Add";
+import NamesForm from "./NamesForm.jsx";
+import PrayerCard from "./PrayerCard.jsx";
 
 const backgrounds = [
-  "131313.png","141414.png","151515.png","222.jpg", "444.jpg", "333.jpg",  "111.jpg", "555.jpg", "666.jpg",  "777.jpg","888.jpg", "999.jpg",  "101010.jpg"
+  "131313.png", "141414.png", "151515.png", "222.jpg", "444.jpg", "333.jpg", "111.jpg", "555.jpg", "666.jpg", "777.jpg", "888.jpg", "999.jpg", "101010.jpg"
 
 ];
 
@@ -133,32 +135,32 @@ const LetterGenerator = () => {
     setIsPlaying(!isPlaying);
   };
   const saveNamesToSheet = (groomName, brideName) => {
-  const NAMES_API_URL = "https://script.google.com/macros/s/AKfycbwDR6SajZ4Aa3Jmomr3lEKBzvFw6FljWQPbUCjXAZBvDhHvt6wzm6EAPqIGCpJMxcs/exec";
+    const NAMES_API_URL = "https://script.google.com/macros/s/AKfycbwDR6SajZ4Aa3Jmomr3lEKBzvFw6FljWQPbUCjXAZBvDhHvt6wzm6EAPqIGCpJMxcs/exec";
 
-  fetch(NAMES_API_URL, {
-    method: "POST",
-    body: new URLSearchParams({
-      groom: groomName,
-      bride: brideName,
-      time: new Date().toISOString(),
-    }),
-  })
-    .then((res) => res.text())
-    .then((responseText) => {
-      console.log("Names saved:", responseText);
+    fetch(NAMES_API_URL, {
+      method: "POST",
+      body: new URLSearchParams({
+        groom: groomName,
+        bride: brideName,
+        time: new Date().toISOString(),
+      }),
     })
-    .catch((error) => {
-      console.error("Error saving names:", error);
-    });
-};
+      .then((res) => res.text())
+      .then((responseText) => {
+        console.log("Names saved:", responseText);
+      })
+      .catch((error) => {
+        console.error("Error saving names:", error);
+      });
+  };
 
   const handleDownloadPDF = () => {
     const API_URL =
       "https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiPwcmmwfddjQt5o3yeFw3951Ns4cnAMnAr1DnFm3Oo4hgw/exec";
-  setIsGenerating(true); // מציג הודעת המתנה
-  setDownloadSuccess(false); // מאפס את הודעת ההצלחה הקודמת
-  audio.play();
-  setIsPlaying(true);
+    setIsGenerating(true); // מציג הודעת המתנה
+    setDownloadSuccess(false); // מאפס את הודעת ההצלחה הקודמת
+    audio.play();
+    setIsPlaying(true);
 
     // קודם נעדכן את המונה
     fetch(API_URL, {
@@ -253,16 +255,16 @@ const LetterGenerator = () => {
               .from(tempDiv)
               .save()
               .then(() => {
-                  setIsGenerating(false); // כאן להוסיף
+                setIsGenerating(false); // כאן להוסיף
                 window.dispatchEvent(new Event("downloadCompleted"));
                 setTimeout(() => {
-      setDownloadSuccess(true);
-      setShowMessage(true);
-      triggerConfetti();
-      setTimeout(() => {
-        setShowMessage(false);
-      }, 1000); // משך הצגת ההודעה לפני התחלת העלמות
-    }, 1000); // עיכוב לפני הצגת ההודעה
+                  setDownloadSuccess(true);
+                  setShowMessage(true);
+                  triggerConfetti();
+                  setTimeout(() => {
+                    setShowMessage(false);
+                  }, 1000); // משך הצגת ההודעה לפני התחלת העלמות
+                }, 1000); // עיכוב לפני הצגת ההודעה
               });
           });
         });
@@ -273,7 +275,7 @@ const LetterGenerator = () => {
 
     audio.play();
     setIsPlaying(true);
-    
+
   };
   const navigate = useNavigate();
 
@@ -355,82 +357,13 @@ const LetterGenerator = () => {
           overflow: "auto",
         }}
       >
-        <Card
+        <PrayerCard
           ref={letterRef}
-          sx={{
-            width: { xs: "100%", md: "7.4cm" },
-            height: { xs: "auto", md: "21cm" },
-            padding: "2rem",
-            boxShadow: 3,
-            textAlign: "right",
-            background: `linear-gradient(rgba(250, 250, 250, 0.61), rgba(255, 255, 255, 0.5)), url(${selectedBackground})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            position: "relative",
-            color: "black",
-            alignSelf: "flex-start",
-          }}
-        >
-          <CardContent>
-            <div
-              style={{
-                marginBottom: "2rem",
-                ...textStyle,
-                textAlign: "center",
-                fontSize: "24px",
-                color: "#2c3e50",
-                textShadow: "2px 2px 4px rgba(0,0,0,0.1)",
-                padding: "10px",
-                borderBottom: "2px solid rgb(2, 2, 2)",
-                borderTop: "2px solid rgb(0, 0, 0)",
-                background: "rgba(255,255,255,0.7)",
-                borderRadius: "8px",
-              }}
-            >
-              תפילה לחופה
-            </div>
-
-            <p
-              style={{
-                ...textStyle,
-                fontSize: "16px",
-                lineHeight: "1.20",
-                letterSpacing: "0.9",
-              }}
-            >
-              רִבּוֹנוֹ שֶׁל עוֹלָם בְּשָׁעָה בָּהּ עוֹמְדִים <br />
-              <b> הֶחָתָן {firstName}</b>, <br />
-              <b> וְהַכַּלָּה {lastName}</b> <br />
-              תַּחַת הַחֻפָּה לִבְנוֹת בַּיִת נֶאֱמָן בְּיִשְׂרָאֵל, אָנָּא
-              בְּרַחֲמֶיךָ הָרַבִּים זַכֵּם לְהָקִים בַּיִת כָּשֵׁר וְנֶאֱמָן
-              וְיִהְיֶה בֵּיתָם בִּנְיַן עֲדֵי עַד עַל אַדְנֵי הַתּוֹרָה
-              וְהַיִּרְאָה, וְתַשְׁרֶה שְׁכִינָתְךָ בְּבֵיתָם מִתּוֹךְ אַהֲבָה
-              וְאַחְוָה, הֲבָנָה שָׁלוֹם וְרֵעוּת. תֵּן לָהֶם חַיִּים אֲרֻכִּים
-              וְטוֹבִים שֶׁל שִׂמְחָה אֲמִתִּית וּפְנִימִית מִתּוֹךְ יִשּׁוּב
-              הַדַּעַת וְשַׁלְוָה וּבְרִיאוּת אֵיתָנָה, בַּרְכֶם בְּכָל מִינֵי
-              בְּרָכָה וְתַשְׁפִּיעַ עֲלֵיהֶם מִשֶּׁפַע אוֹצָרְךָ הַטּוֹב,
-              וְהַצְלִיחֵם בְּרוּחָנִיּוּת וּבְגַּשְׁמִיּוּת בְּכָל מִילֵי
-              דְּמֵיטָב, פַּרְנָסָה בְּכָבוֹד וּבְרֶוַח, וּתְזַכֵּם בְּמָּקוֹם
-              יִשּׁוּב נֹחַ וּמֻצְלָח, לְקַיֵּם כָּל דִּבְרֵי תּוֹרָתֵנוּ
-              הַקְּדוֹשָׁה מִתּוֹךְ יִרְאַת שָׁמַיִם טְהוֹרָה, אַהֲבָה
-              וְשִׂמְחָה תְּמִידִית.
-              <br />
-              <br></br>
-              <b>וּבְכֵן יְהִי רָצוֹן מִלְּפָנֶיךָ,</b> מֶלֶךְ רָם וְנִשָּׂא
-              שֶׁתְּבָרְכֵם בְּבִרְכַּת שָׁמַיִם וּתְזַכֵּם לְהִפָּקֵד בְּזֶרַע
-              קֹדֶשׁ שֶׁל קְיָמָא לְהַעֲמִיד דּוֹרֵי דּוֹרוֹת שֶׁל בָּנִים
-              וּבָנוֹת צַדִּיקִים וִישָׁרִים, כֻּלָּם שׁוֹמְרֵי תּוֹרָה
-              וּמְקַיְּמֵי מִצְווֹת מִתּוֹךְ יִרְאַת שָׁמַיִם טְהוֹרָה
-              וּבְרִיאוּת אֵיתָנָה, וְיִרְאוּ הֵם רֹב נַחַת וְאֹשֶׁר, וּפְרֹשׂ
-              סֻכַּת שְׁלוֹמְךָ עַל כָּל יוֹצְאֵי חַלָצֵיהֶם וְעַל כָּל
-              הַמְּחֻתָּנִים שֶׁיִּחְיוּ, וְנִזְכֶּה כֻּלָּנוּ יַחַד לְהַקְבִּיל
-              פְּנֵי מְשִׁיחַ צִדְקֵנוּ, לִרְאוֹת בְּבִנְיַן בֵּית
-              מִקְדָּשֵׁנוּ וְתִפְאַרְתֵּנוּ בִּכְלַל עַמְּךָ בֵּית יִשְׂרָאֵל
-              בִּמְהֵרָה בְּיָמֵינוּ, אָמֵן.
-            </p>
-          </CardContent>
-        </Card>
+          background={selectedBackground}
+          textStyle={textStyle}
+          firstName={firstName}
+          lastName={lastName}
+        />
 
         <Box
           sx={{
@@ -460,79 +393,13 @@ const LetterGenerator = () => {
                 הכניסו את שמות החתן והכלה
               </Typography>
 
-              <CacheProvider value={cacheRtl}>
-                <ThemeProvider theme={theme}>
-                  <div dir="rtl">
-                    <TextField
-                      translate="no"
-                      label="שם החתן"
-                      variant="outlined"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      fullWidth
-                      sx={{
-                        mb: 2,
-                        "& .MuiOutlinedInput-root": {
-                          color: "#983f4b",
-                          "& fieldset": {
-                            borderColor: "#983f4b",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "#983f4b",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#983f4b",
-                            borderWidth: "2px",
-                          },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "#983f4b",
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "#983f4b",
-                        },
-                      }}
-                    />
-                  </div>
-                </ThemeProvider>
-              </CacheProvider>
+              <NamesForm
+                firstName={firstName}
+                lastName={lastName}
+                onFirstNameChange={(e) => setFirstName(e.target.value)}
+                onLastNameChange={(e) => setLastName(e.target.value)}
+              />
 
-              <CacheProvider value={cacheRtl}>
-                <ThemeProvider theme={theme}>
-                  <div dir="rtl">
-                    <TextField
-                      translate="no"
-                      label="שם הכלה"
-                      variant="outlined"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      fullWidth
-                      sx={{
-                        mb: 2,
-                        "& .MuiOutlinedInput-root": {
-                          color: "#983f4b",
-                          "& fieldset": {
-                            borderColor: "#983f4b",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "#983f4b",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#983f4b",
-                            borderWidth: "2px",
-                          },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "#983f4b",
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "#983f4b",
-                        },
-                      }}
-                    />
-                  </div>
-                </ThemeProvider>
-              </CacheProvider>
 
               <Button
                 variant="contained"
@@ -633,28 +500,28 @@ const LetterGenerator = () => {
               {/* קומפוננטת אנימציה */}
               <MusicNotes isPlaying={isPlaying} />
               {isGenerating && (
-  <div
-    style={{
-      position: "fixed",
-      top: "20%",
-      right: 0,
-      left: 0,
-      margin: "0 auto",
-      width: "fit-content",
-      backgroundColor: "#fff",
-      padding: "16px 24px",
-      borderRadius: "8px",
-      boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-      zIndex: 10001,
-      color: "#c27d83",
-      fontWeight: "bold",
-      fontSize: "1.2rem",
-      textAlign: "center",
-    }}
-  >
-    ממתין ליצירת קובץ להדפסה
-  </div>
-)}
+                <div
+                  style={{
+                    position: "fixed",
+                    top: "20%",
+                    right: 0,
+                    left: 0,
+                    margin: "0 auto",
+                    width: "fit-content",
+                    backgroundColor: "#fff",
+                    padding: "16px 24px",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                    zIndex: 10001,
+                    color: "#c27d83",
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    textAlign: "center",
+                  }}
+                >
+                  ממתין ליצירת קובץ להדפסה
+                </div>
+              )}
 
               {downloadSuccess && (
                 <div
