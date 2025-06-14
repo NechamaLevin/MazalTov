@@ -53,7 +53,7 @@ function SupportPopup() {
             ) : (
               <div style={styles.detailsBox}>
                 <p><strong>📄 פרטי חשבון להעברה:</strong></p>
-                <p>בנק פאגי<br />סניף 179<br />מספר חשבון: 630861<br />שם המוטב: נחמה לוין<br />תודה רבה!</p>
+                <p>בנק פאגי<br />סניף 179<br />מספר חשבון: 630861<br />תודה רבה!</p>
                 <button style={styles.closeBtn} onClick={() => setShowPopup(false)}>סגור</button>
               </div>
             )}
