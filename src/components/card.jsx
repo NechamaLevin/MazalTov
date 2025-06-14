@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   CardContent,
-  TextField,
   Box,
   Typography,
   Stack,
@@ -14,10 +13,10 @@ import { Download } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import LoveUsButton from "./Fidback.jsx";
-import { createTheme } from "@mui/material/styles";
-import createCache from "@emotion/cache";
-import { prefixer } from "stylis";
-import rtlPlugin from "stylis-plugin-rtl";
+// import { createTheme } from "@mui/material/styles";
+// import createCache from "@emotion/cache";
+// import { prefixer } from "stylis";
+// import rtlPlugin from "stylis-plugin-rtl";
 import RichEditor from "./Email.jsx";
 import MusicNotes from "./MusicNotes";
 import Pause from "@mui/icons-material/Pause";
@@ -44,14 +43,14 @@ const LetterGenerator = () => {
     color: "#000000",
     fontFamily: "Rubik",
   });
-  const theme = createTheme({
-    direction: "rtl",
-  });
-  const cacheRtl = createCache({
-    key: "muirtl",
-    stylisPlugins: [prefixer, rtlPlugin],
-    color: "#0D1E46",
-  });
+  // const theme = createTheme({
+  //   direction: "rtl",
+  // });
+  // const cacheRtl = createCache({
+  //   key: "muirtl",
+  //   stylisPlugins: [prefixer, rtlPlugin],
+  //   color: "#0D1E46",
+  // });
 
   const triggerConfetti = () => {
     const canvas = document.getElementById("confetti-canvas");
