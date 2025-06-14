@@ -15,7 +15,6 @@ import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import LoveUsButton from "./Fidback.jsx";
 import { createTheme } from "@mui/material/styles";
-import { CacheProvider, ThemeProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { prefixer } from "stylis";
 import rtlPlugin from "stylis-plugin-rtl";
