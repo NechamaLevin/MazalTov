@@ -85,7 +85,7 @@ export default function RichEditor({ open, onClose }) {
       process.env.REACT_APP_EMAILJS_PUBLIC_KEY
     )
     .then((result) => {
-      console.log('Email sent!', result.text);
+      console.log('Email sent', result.text);
       setShowSuccess(true);
       onClose();
     })
