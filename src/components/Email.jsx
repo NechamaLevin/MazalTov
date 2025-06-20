@@ -99,6 +99,7 @@ export default function RichEditor({ open, onClose }) {
 };
 
 
+
   return (
     <>
       <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth dir="rtl">
