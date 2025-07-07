@@ -6,6 +6,7 @@ import LoveUsButton from "./Fidback";
 import RichEditor from "./Email";
 
 function HomePage() {
+  
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
 

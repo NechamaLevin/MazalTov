@@ -85,7 +85,7 @@ export default function RichEditor({ open, onClose }) {
       process.env.REACT_APP_EMAILJS_PUBLIC_KEY
     )
     .then((result) => {
-      console.log('Email sent!', result.text);
+      console.log('Email sent', result.text);
       setShowSuccess(true);
       onClose();
     })
@@ -97,6 +97,7 @@ export default function RichEditor({ open, onClose }) {
       setIsSending(false);
     });
 };
+
 
 
   return (
@@ -113,7 +114,7 @@ export default function RichEditor({ open, onClose }) {
           <Box display="flex" flexDirection="column">
             <Box px={2} py={1}>
               <div style={{ fontSize: '1rem', fontWeight: 'bold', color: '#333' }}>
-                דעתכם חשובה לנו! כל הערה או הארה תתקבל בברכה ❣️
+             נשמח לקבל משוב 
               </div>
             </Box>
 
