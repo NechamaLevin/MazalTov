@@ -37,6 +37,10 @@ const backgrounds = [
 
 ];
 
+function isDataUrlBackground(bg) {
+  return typeof bg === "string" && bg.startsWith("data:");
+}
+
 const LetterGenerator = () => {
   const [textStyle, setTextStyle] = useState({
     textAlign: "justify",
@@ -84,6 +88,11 @@ const LetterGenerator = () => {
 
   const letterRef = useRef();
 
+  const [customBgFit, setCustomBgFit] = useState({
+    zoom: 150,
+    x: 50,
+    y: 50,
+  });
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -91,7 +100,28 @@ const LetterGenerator = () => {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setSelectedBackground(reader.result); // שומר את תמונת הרקע
+      const img = new Image();
+      img.onload = () => {
+        const MAX_DIM = 1000;
+        let w = img.width;
+        let h = img.height;
+        if (w > MAX_DIM || h > MAX_DIM) {
+          const ratio = Math.min(MAX_DIM / w, MAX_DIM / h);
+          w = Math.round(w * ratio);
+          h = Math.round(h * ratio);
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+        const resized = canvas.toDataURL("image/jpeg", 0.8);
+        canvas.width = 0;
+        canvas.height = 0;
+        setSelectedBackground(resized);
+        setCustomBgFit({ zoom: 150, x: 50, y: 50 });
+      };
+      img.src = reader.result;
     };
     reader.readAsDataURL(file);
   };
@@ -155,125 +185,186 @@ const LetterGenerator = () => {
   const handleDownloadPDF = () => {
     const API_URL =
       "https://script.google.com/macros/s/AKfycbz7kfmrD-dz6GqQ_cgvG8ddiPwcmmwfddjQt5o3yeFw3951Ns4cnAMnAr1DnFm3Oo4hgw/exec";
-    setIsGenerating(true); // מציג הודעת המתנה
-    setDownloadSuccess(false); // מאפס את הודעת ההצלחה הקודמת
+    setIsGenerating(true);
+    setDownloadSuccess(false);
     audio.play();
     setIsPlaying(true);
 
-    // קודם נעדכן את המונה
+    // עדכון מונה - fire and forget, לא חוסם את ה-PDF
     fetch(API_URL, {
       method: "POST",
       body: new URLSearchParams({ fileName: "card" }),
-    })
-      .then(() => {
-        // רק אחרי שהמונה עודכן - נמשיך ליצור את ה-PDF
-        document.fonts.ready.then(() => {
-          if (!letterRef.current) return;
+    }).catch((err) => console.error("שגיאה בעדכון המונה:", err));
 
-          const lightenImage = (imgSrc, callback) => {
-            const img = new Image();
-            img.crossOrigin = "Anonymous";
-            img.src = imgSrc;
-            img.onload = () => {
+    // safety timeout
+    const safetyTimer = setTimeout(() => {
+      setIsGenerating(false);
+    }, 30000);
+
+    const generatePDF = () => {
+      document.fonts.ready.then(() => {
+        if (!letterRef.current) {
+          clearTimeout(safetyTimer);
+          setIsGenerating(false);
+          return;
+        }
+
+        const lightenImage = (imgSrc, callback) => {
+          const img = new Image();
+          img.crossOrigin = "Anonymous";
+          img.src = imgSrc;
+          img.onload = () => {
+            try {
+              const MAX_DIM = 800;
+              let w = img.width;
+              let h = img.height;
+              if (w > MAX_DIM || h > MAX_DIM) {
+                const ratio = Math.min(MAX_DIM / w, MAX_DIM / h);
+                w = Math.round(w * ratio);
+                h = Math.round(h * ratio);
+              }
               const canvas = document.createElement("canvas");
               const ctx = canvas.getContext("2d");
-              canvas.width = img.width;
-              canvas.height = img.height;
-              ctx.drawImage(img, 0, 0);
+              canvas.width = w;
+              canvas.height = h;
+              ctx.drawImage(img, 0, 0, w, h);
               ctx.globalAlpha = 0.5;
               ctx.fillStyle = "#ffffff";
-              ctx.fillRect(0, 0, canvas.width, canvas.height);
-              callback(canvas.toDataURL("image/jpeg"));
-              saveNamesToSheet(firstName, lastName);
-            };
+              ctx.fillRect(0, 0, w, h);
+              const result = canvas.toDataURL("image/jpeg", 0.75);
+              canvas.width = 0;
+              canvas.height = 0;
+              callback(result);
+            } catch {
+              callback(imgSrc);
+            }
+          };
+          img.onerror = () => {
+            callback(imgSrc);
+          };
+        };
+
+        lightenImage(selectedBackground, (lightImage) => {
+          const tempDiv = document.createElement("div");
+          tempDiv.style.width = "297mm";
+          tempDiv.style.height = "209mm";
+          tempDiv.style.maxHeight = "209mm";
+          tempDiv.style.overflow = "hidden";
+          tempDiv.style.display = "flex";
+          tempDiv.style.flexDirection = "row";
+          tempDiv.style.justifyContent = "space-between";
+          tempDiv.style.alignItems = "stretch";
+          tempDiv.style.margin = "0";
+          tempDiv.style.padding = "0";
+
+          const customPdf = isDataUrlBackground(selectedBackground);
+
+          for (let i = 0; i < 4; i++) {
+            const column = document.createElement("div");
+            column.style.width = "25%";
+            column.style.height = "100%";
+            column.style.border = "2px solid black";
+            column.style.boxSizing = "border-box";
+            column.style.display = "flex";
+            column.style.flexDirection = "column";
+            column.style.justifyContent = "flex-start";
+            column.style.alignItems = "center";
+            column.style.textAlign = "justify";
+            column.style.direction = "rtl";
+            column.style.margin = "0";
+            column.style.padding = "3mm";
+            column.style.fontSize = "8px";
+            column.style.position = "relative";
+            column.style.overflow = "hidden";
+            column.style.backgroundImage = `url(${lightImage})`;
+            column.style.backgroundSize = customPdf
+              ? `auto ${customBgFit.zoom}%`
+              : "cover";
+            column.style.backgroundPosition = customPdf
+              ? `${customBgFit.x}% ${customBgFit.y}%`
+              : "center";
+            column.style.backgroundRepeat = "no-repeat";
+
+            const clonedContent = document.createElement("div");
+            const pdfContentEl = letterRef.current.querySelector('[data-pdf-content]');
+            clonedContent.innerHTML = pdfContentEl
+              ? pdfContentEl.innerHTML
+              : letterRef.current.innerHTML;
+            clonedContent.style.overflowWrap = "break-word";
+            clonedContent.style.lineHeight = "1.2";
+            clonedContent.style.letterSpacing = "0.5px";
+            clonedContent.style.wordBreak = "break-word";
+            clonedContent.style.textAlign = "justify";
+            clonedContent.style.fontSize = "9px";
+            clonedContent.style.maxWidth = "100%";
+            clonedContent.style.flex = "1";
+
+            column.appendChild(clonedContent);
+
+            // watermark בתחתית
+            const watermark = document.createElement("div");
+            watermark.textContent = "mazal-tov.netlify.app \u00A9 כל הזכויות שמורות";
+            watermark.style.fontSize = "6px";
+            watermark.style.color = "rgba(80, 80, 80, 0.7)";
+            watermark.style.textAlign = "center";
+            watermark.style.width = "100%";
+            watermark.style.marginTop = "auto";
+            watermark.style.paddingTop = "2mm";
+            watermark.style.direction = "ltr";
+            watermark.style.letterSpacing = "0.3px";
+            column.appendChild(watermark);
+
+            tempDiv.appendChild(column);
+          }
+
+          // משחררים את lightImage מהזיכרון
+          lightImage = null;
+
+          const isCustomImage = isDataUrlBackground(selectedBackground);
+          const opt = {
+            margin: 0,
+            filename: "תפילה_לחופה.pdf",
+            image: { type: "jpeg", quality: 0.9 },
+            html2canvas: {
+              scale: isCustomImage ? 1.5 : 2,
+              letterRendering: true,
+              backgroundColor: null,
+              useCORS: true,
+            },
+            jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+            pagebreak: { mode: "avoid-all" },
           };
 
-          lightenImage(selectedBackground, (lightImage) => {
-            const tempDiv = document.createElement("div");
-            tempDiv.style.width = "297mm";
-            tempDiv.style.height = "210mm";
-            tempDiv.style.display = "flex";
-            tempDiv.style.flexDirection = "row";
-            tempDiv.style.justifyContent = "space-between";
-            tempDiv.style.alignItems = "flex-start";
-            tempDiv.style.margin = "0";
-            tempDiv.style.padding = "0";
-
-            for (let i = 0; i < 4; i++) {
-              const column = document.createElement("div");
-              column.style.width = "25%";
-              column.style.height = "100%";
-              column.style.border = "2px solid black";
-              column.style.boxSizing = "border-box";
-              column.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
-              column.style.display = "flex";
-              column.style.flexDirection = "column";
-              column.style.justifyContent = "center";
-              column.style.alignItems = "center";
-              column.style.textAlign = "justify";
-              column.style.direction = "rtl";
-              column.style.margin = "0";
-              column.style.padding = "3mm";
-              column.style.fontSize = "8px";
-              column.style.backgroundImage = `url(${lightImage})`;
-              column.style.backgroundSize = "cover";
-              column.style.backgroundPosition = "center";
-              column.style.backgroundRepeat = "no-repeat";
-
-              const clonedContent = document.createElement("div");
-              clonedContent.innerHTML = letterRef.current.innerHTML;
-              clonedContent.style.overflowWrap = "break-word";
-              clonedContent.style.lineHeight = "1.2";
-              clonedContent.style.letterSpacing = "0.5px";
-              clonedContent.style.wordBreak = "break-word";
-              clonedContent.style.textAlign = "justify";
-              clonedContent.style.fontSize = "9px";
-              clonedContent.style.maxWidth = "100%";
-
-              column.appendChild(clonedContent);
-              tempDiv.appendChild(column);
-            }
-
-            const opt = {
-              margin: 0,
-              filename: "תפילה_לחופה.pdf",
-              image: { type: "jpeg", quality: 1.0 },
-              html2canvas: {
-                scale: 3,
-                dpi: 300,
-                letterRendering: true,
-                backgroundColor: null,
-                useCORS: true,
-              },
-              jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
-            };
-
-            html2pdf()
-              .set(opt)
-              .from(tempDiv)
-              .save()
-              .then(() => {
-                setIsGenerating(false); // כאן להוסיף
-                window.dispatchEvent(new Event("downloadCompleted"));
+          html2pdf()
+            .set(opt)
+            .from(tempDiv)
+            .save()
+            .then(() => {
+              tempDiv.innerHTML = "";
+              clearTimeout(safetyTimer);
+              setIsGenerating(false);
+              saveNamesToSheet(firstName, lastName);
+              window.dispatchEvent(new Event("downloadCompleted"));
+              setTimeout(() => {
+                setDownloadSuccess(true);
+                setShowMessage(true);
+                triggerConfetti();
                 setTimeout(() => {
-                  setDownloadSuccess(true);
-                  setShowMessage(true);
-                  triggerConfetti();
-                  setTimeout(() => {
-                    setShowMessage(false);
-                  }, 1000); // משך הצגת ההודעה לפני התחלת העלמות
-                }, 1000); // עיכוב לפני הצגת ההודעה
-              });
-          });
+                  setShowMessage(false);
+                }, 1000);
+              }, 1000);
+            })
+            .catch((err) => {
+              tempDiv.innerHTML = "";
+              clearTimeout(safetyTimer);
+              console.error("שגיאה ביצירת PDF:", err);
+              setIsGenerating(false);
+            });
         });
-      })
-      .catch((err) => {
-        console.error("שגיאה בעדכון המונה:", err);
       });
+    };
 
-    audio.play();
-    setIsPlaying(true);
-
+    generatePDF();
   };
   const navigate = useNavigate();
 
@@ -361,6 +452,15 @@ const LetterGenerator = () => {
           textStyle={textStyle}
           firstName={firstName}
           lastName={lastName}
+          customBgFit={
+            isDataUrlBackground(selectedBackground) ? customBgFit : undefined
+          }
+          onCustomBgFitChange={
+            isDataUrlBackground(selectedBackground)
+              ? (patch) =>
+                  setCustomBgFit((prev) => ({ ...prev, ...patch }))
+              : undefined
+          }
         />
 
         <Box
@@ -738,7 +838,7 @@ const LetterGenerator = () => {
           <Typography variant="body2">
             <Button
               variant="text"
-              color="whiht'"
+              color="inherit"
               onClick={() => setOpenDialog(true)}
             >
               לחצו ליצירת קשר במייל
